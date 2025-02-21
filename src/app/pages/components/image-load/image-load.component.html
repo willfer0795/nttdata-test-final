@@ -1,0 +1,13 @@
+<div class="image-container">
+    <ngx-skeleton-loader
+       *ngIf="isLoading"
+        count="1"
+        appearance="circle"
+        [theme]="{
+        width: '50px',
+        height: '50px',
+        }"
+    >
+    </ngx-skeleton-loader>
+    <img [src]="src" (load)="onLoad()" [hidden]="isLoading" alt="img principal" />
+  </div>
