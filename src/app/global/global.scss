@@ -1,0 +1,46 @@
+@import "./breakpoints";
+@import './mixins';
+
+.medium-screen-down {
+  display: none;
+  @include breakpoint('limit-medium') {
+    display: inherit;
+  }
+}
+
+.medium-screen-up {
+  display: inherit;
+  @include breakpoint('limit-medium') {
+    display: none;
+  }
+}
+
+.xlarge-screen-up {
+  display: inherit;
+  @include breakpoint('limit-xlarge') {
+    display: none !important;
+  }
+}
+
+.xlarge-screen-down {
+  display: none;
+  @include breakpoint('limit-xlarge') {
+    display: inherit;
+  }
+}
+
+.large-screen-up {
+  display: inherit;
+  @include breakpoint('limit-large') {
+    display: none !important;
+  }
+}
+
+.large-screen-down {
+  display: none;
+  @include breakpoint('limit-large') {
+    display: inherit;
+  }
+}
+
+

@@ -1,0 +1,79 @@
+
+<form class="form-data" *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+    <div class="row">
+        <div class="col">
+            <label for="id">ID:</label>
+            <input [ngClass]="{'error': form.get('id')?.touched && form.get('id')?.errors}" 
+            id="id" formControlName="id">
+            <div class="col__cont-errors" *ngIf="form.get('id')?.invalid && form.get('id')?.touched">
+              <span *ngIf="form.get('id')?.errors?.['required']" style="color: red;">ID no válido</span>
+              <span *ngIf="form.get('id')?.errors?.['minlength']" style="color: red;">ID debe tener al menos 3 caracteres</span>
+              <span *ngIf="form.get('id')?.errors?.['maxlength']" style="color: red;">ID no puede tener más de 10 caracteres</span>
+              <span *ngIf="form.get('id')?.errors?.['idExists']" style="color: red;">ID ya existe</span>
+            </div>
+          </div>
+        
+          <div class="col">
+            <label for="nombre">Nombre:</label>
+            <input [ngClass]="{'error': form.get('nombre')?.touched &&  form.get('nombre')?.errors}"
+            id="nombre" formControlName="nombre">
+            <div class="col__cont-errors" *ngIf="form.get('nombre')?.invalid && form.get('nombre')?.touched">
+              <span *ngIf="form.get('nombre')?.errors?.['required']" style="color: red;">Nombre no válido</span>
+              <span *ngIf="form.get('nombre')?.errors?.['minlength']" style="color: red;">Nombre debe tener al menos 5 caracteres</span>
+              <span *ngIf="form.get('nombre')?.errors?.['maxlength']" style="color: red;">Nombre no puede tener más de 100 caracteres</span>
+            </div>
+          </div>
+    </div>
+    
+    <div class="row">
+        <div class="col">
+            <label for="descripcion">Descripción:</label>
+            <input [ngClass]="{'error':form.get('descripcion')?.touched &&  form.get('descripcion')?.errors}"
+            id="descripcion" formControlName="descripcion">
+            <div class="col__cont-errors" *ngIf="form.get('descripcion')?.invalid && form.get('descripcion')?.touched">
+              <span *ngIf="form.get('descripcion')?.errors?.['required']" style="color: red;">Descripción no válida</span>
+              <span *ngIf="form.get('descripcion')?.errors?.['minlength']" style="color: red;">Descripción debe tener al menos 10 caracteres</span>
+              <span *ngIf="form.get('descripcion')?.errors?.['maxlength']" style="color: red;">Descripción no puede tener más de 200 caracteres</span>
+            </div>
+          </div>
+        
+          <div class="col">
+            <label for="logo">Logo:</label>
+            <input [ngClass]="{'error':form.get('logo')?.touched &&  form.get('logo')?.errors}"
+            id="logo" formControlName="logo" type="text">
+            <div class="col__cont-errors" *ngIf="form.get('logo')?.invalid && form.get('logo')?.touched">
+              <span *ngIf="form.get('logo')?.errors?.['required']" style="color: red;">Logo no válido</span>
+            </div>
+          </div>
+    </div>
+   
+    <div class="row">
+        <div class="col">
+            <label for="fechaLiberacion">Fecha de Liberación:</label>
+            <input [ngClass]="{'error':form.get('fechaLiberacion')?.touched && form.get('fechaLiberacion')?.errors}"
+             id="fechaLiberacion" formControlName="fechaLiberacion" type="date">
+            <div class="col__cont-errors" *ngIf="form.get('fechaLiberacion')?.invalid && form.get('fechaLiberacion')?.touched">
+              <span *ngIf="form.get('fechaLiberacion')?.errors?.['required']" style="color: red;">Fecha de liberación no válida</span>
+              <span *ngIf="form.get('fechaLiberacion')?.errors?.['invalidFechaLiberacion']" style="color: red;">Fecha debe ser igual o mayor a la fecha actual</span>
+            </div>
+          </div>
+        
+          <div class="col">
+            <label for="fechaRevision">Fecha de Revisión:</label>
+            <input [ngClass]="{'error':form.get('fechaRevision')?.touched && form.get('fechaRevision')?.errors}" 
+            id="fechaRevision" formControlName="fechaRevision" type="date">
+            <div class="col__cont-errors" *ngIf="form.get('fechaRevision')?.invalid && form.get('fechaRevision')?.touched">
+              <span *ngIf="form.get('fechaRevision')?.errors?.['required']" style="color: red;">Fecha de revisión no válida</span>
+              <span *ngIf="form.get('fechaRevision')?.errors?.['invalidFechaRevision']" style="color: red;">Fecha debe ser exactamente un año posterior a la fecha de liberación</span>
+            </div>
+          </div>
+    </div>
+  
+    
+  <div class="btn-actions">
+      <button type="button" class="btn-reset" (click)="resetForm()">Reiniciar</button>
+      <button class="btn-agg" type="submit" [disabled]="form.invalid">Enviar</button>
+  </div>
+   
+
+  </form>

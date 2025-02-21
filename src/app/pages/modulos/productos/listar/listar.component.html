@@ -1,0 +1,145 @@
+<div class="container">
+    <div  *ngIf="!loading">
+        <div class="header-table">
+            <div class="cont-search">
+                <input (keyup.enter)='buscarPorTexto($event)' placeholder="Buscar..." type="text">
+            </div>
+            <div (click)="crearProducto()">
+                <button class="btn-agg">Agregar</button>
+            </div>
+        </div>
+    
+        <div class="cont-table">
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Logo</th>
+                            <th>Nombre del producto</th>
+                            <th>Descripcion <i class="fa fa-info-circle"></i></th>
+                            <th>Fecha de liberación <i class="fa fa-info-circle"></i></th>
+                            <th>Fecha de reestructuración <i class="fa fa-info-circle"></i></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of listProductos; let i = index">
+                            <td>
+                                <img [src]="item.logo" alt="">
+                            </td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.description}}</td>
+                            <td>{{item.date_release}}</td>
+                            <td>{{item.date_revision}}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <span class="dropdown-toggle" (click)="toggleDropdown(i)">
+                                      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </span>
+                                    <div id="drop_{{i}}" class="dropdown-menu">
+                                      <span (click)="editarProducto(item)" class="dropdown-item">Editar</span>
+                                      <span (click)="eliminarProducto(item)" class="dropdown-item">Eliminar</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="cont-select">
+                <div>
+                    <span>{{this.cantResult}} resultados</span>
+                </div>
+                <div>
+                    <select (change)="showTable($event)" class="select-form" name="selectcant" id="selectcant">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="loading" class="container__skeleton">
+        <div class="header-table">
+            <div class="header-table__skelet-search">
+                <ngx-skeleton-loader
+                    count="1"
+                    [theme]="{
+                    'border-radius': '5px',
+                    height: '38px',
+                    width:'52.5%',
+                    'animation-duration': '2s'
+                    }"
+                >
+                </ngx-skeleton-loader>
+            </div>
+            <div class="header-table__skelet-btn">
+                <ngx-skeleton-loader
+                    count="1"
+                    [theme]="{
+                    'border-radius': '5px',
+                    width:'110px',
+                    height: '50px',
+                    'animation-duration': '2s'
+                    }"
+                >
+                </ngx-skeleton-loader>
+            </div>
+            
+        </div>
+        <ngx-skeleton-loader
+            count="3"
+            [theme]="{
+            'border-radius': '5px',
+            height: '70px',
+            'margin-bottom': '5px',
+            'animation-duration': '2s'
+            }"
+        >
+        </ngx-skeleton-loader>
+        <div class="header-table">
+            <div class="header-table__skelet-search">
+                <ngx-skeleton-loader
+                    count="1"
+                    [theme]="{
+                    'border-radius': '5px',
+                    height: '38px',
+                    width:'30%',
+                    'animation-duration': '2s'
+                    }"
+                >
+                </ngx-skeleton-loader>
+            </div>
+            <div class="header-table__skelet-btn">
+                <ngx-skeleton-loader
+                    count="1"
+                    [theme]="{
+                    'border-radius': '5px',
+                    width:'80px',
+                    height: '45px',
+                    'animation-duration': '2s'
+                    }"
+                >
+                </ngx-skeleton-loader>
+            </div>
+            
+        </div>
+      </div>
+    
+</div>
+<!-- eliminar-producto-modal.component.html -->
+
+<div class="modal" id="eliminarProductoModal">
+    <div class="modal-content">
+      <div class="head-modal ">
+        <span>¿Estas seguro de eliminar el producto {{nameProductoElim}}?</span>
+      </div>
+      
+      <div class="modal-buttons">
+        <button (click)="closeModal()">Cancelar</button>
+        <button class="btn-agg" (click)="confirmDelete()">Confirmar </button>
+      </div>
+    </div>
+  </div>

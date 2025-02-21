@@ -1,0 +1,23 @@
+$xs: 320px;
+$sm: 520px;
+$md: 925px;
+$lg: 1024px;
+$xl: 1440px;
+
+$breakpoints: (
+  'min-xsmall': (min-width: $xs),
+  'min-small': (min-width: $sm),
+  'min-medium': (min-width: $md),
+  'min-large': (min-width: $lg),
+  'min-xlarge': (min-width: $xl),
+  'max-xsmall': (max-width: $xs),
+  'max-small': (max-width: $sm),
+  'max-medium': (max-width: $md),
+  'max-large': (max-width: $lg),
+  'max-xlarge': (max-width: $xl),
+  'limit-xsmall': (max-width: $xs - 1px),
+  'limit-small': (max-width: $sm - 1px),
+  'limit-medium': (max-width: $md - 1px),
+  'limit-large': (max-width: $lg - 1px),
+  'limit-xlarge': (max-width: $xl - 1px)
+) !default;
