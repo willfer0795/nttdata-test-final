@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductosService } from 'src/app/services/productos.service';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 describe('FormRegisterComponent', () => {
   let component: FormRegisterComponent;
@@ -43,6 +44,7 @@ let productosService: ProductosService;
       providers: [
               ProductosService,
               FormBuilder,
+              DatePipe,
               { provide: Router, useValue: routerSpy },
             ]
     })

@@ -5,9 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HeaderComponent } from './pages/components/header/header.component';
 import { CommonModule, DatePipe } from '@angular/common';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader'; 
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { HeaderComponent } from './components/header/header.component';
+import { SharedModule } from './shared.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     FormsModule,
     NgxSkeletonLoaderModule,
     DatePipe,
+    SharedModule
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

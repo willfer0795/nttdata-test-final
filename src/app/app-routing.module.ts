@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'productos', loadChildren: () => import('./pages/modulos/productos/productos.module').then(m => m.ProductosModule) },
+  { path: 'productos', loadChildren: () => import('./modulos/productos/productos.module').then(m => m.ProductosModule) },
   { path: '**', redirectTo: 'productos' }
 ];
 

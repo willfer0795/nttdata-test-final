@@ -1,10 +1,10 @@
 import {  CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormRegisterComponent } from './pages/components/form-register/form-register.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ImageLoadComponent } from './pages/components/image-load/image-load.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { FormRegisterComponent } from './components/form-register/form-register.component';
+import { ImageLoadComponent } from './components/image-load/image-load.component';
 
 
 @NgModule({

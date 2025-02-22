@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
 import { ProductosRoutingModule } from './productos-routing.module';
-import { CrearProductoComponent } from './crear-producto/crear-producto.component';
-import { ListarComponent } from './listar/listar.component';
-import { EditarProductoComponent } from './editar-producto/editar-producto.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SharedModule } from 'src/app/shared.module';
+import { CrearProductoComponent } from './pages/crear-producto/crear-producto.component';
+import { ListarComponent } from './pages/listar/listar.component';
+import { EditarProductoComponent } from './pages/editar-producto/editar-producto.component';
 
 
 @NgModule({

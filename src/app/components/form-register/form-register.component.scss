@@ -1,0 +1,27 @@
+
+.form-data{
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 5%;
+    &__row{
+        display: flex;
+        &-col{
+            width: 50%;
+            display: flex;
+            padding: 1%;
+            flex-direction: column;
+            &__cont-errors {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+    &__btn-actions{
+        display: flex  ;
+        justify-content: center;
+        margin-top: 5%;
+        button:first-child {
+          margin-right: 70px;
+        }
+      }
+}

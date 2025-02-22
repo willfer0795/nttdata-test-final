@@ -1,7 +1,7 @@
 
 <form class="form-data" *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
-    <div class="row">
-        <div class="col">
+    <div class="form-data__row">
+        <div class="form-data__row-col">
             <label for="id">ID:</label>
             <input [ngClass]="{'error': form.get('id')?.touched && form.get('id')?.errors}" 
             id="id" formControlName="id">
@@ -13,7 +13,7 @@
             </div>
           </div>
         
-          <div class="col">
+          <div class="form-data__row-col">
             <label for="nombre">Nombre:</label>
             <input [ngClass]="{'error': form.get('nombre')?.touched &&  form.get('nombre')?.errors}"
             id="nombre" formControlName="nombre">
@@ -25,8 +25,8 @@
           </div>
     </div>
     
-    <div class="row">
-        <div class="col">
+    <div class="form-data__row">
+        <div class="form-data__row-col">
             <label for="descripcion">Descripción:</label>
             <input [ngClass]="{'error':form.get('descripcion')?.touched &&  form.get('descripcion')?.errors}"
             id="descripcion" formControlName="descripcion">
@@ -37,7 +37,7 @@
             </div>
           </div>
         
-          <div class="col">
+          <div class="form-data__row-col">
             <label for="logo">Logo:</label>
             <input [ngClass]="{'error':form.get('logo')?.touched &&  form.get('logo')?.errors}"
             id="logo" formControlName="logo" type="text">
@@ -47,18 +47,18 @@
           </div>
     </div>
    
-    <div class="row">
-        <div class="col">
+    <div class="form-data__row">
+        <div class="form-data__row-col">
             <label for="fechaLiberacion">Fecha de Liberación:</label>
             <input [ngClass]="{'error':form.get('fechaLiberacion')?.touched && form.get('fechaLiberacion')?.errors}"
-             id="fechaLiberacion" formControlName="fechaLiberacion" type="date">
+             id="fechaLiberacion" [min]="fechaMinima" formControlName="fechaLiberacion" type="date">
             <div class="col__cont-errors" *ngIf="form.get('fechaLiberacion')?.invalid && form.get('fechaLiberacion')?.touched">
               <span *ngIf="form.get('fechaLiberacion')?.errors?.['required']" style="color: red;">Fecha de liberación no válida</span>
               <span *ngIf="form.get('fechaLiberacion')?.errors?.['invalidFechaLiberacion']" style="color: red;">Fecha debe ser igual o mayor a la fecha actual</span>
             </div>
           </div>
         
-          <div class="col">
+          <div class="form-data__row-col">
             <label for="fechaRevision">Fecha de Revisión:</label>
             <input [ngClass]="{'error':form.get('fechaRevision')?.touched && form.get('fechaRevision')?.errors}" 
             id="fechaRevision" formControlName="fechaRevision" type="date">
@@ -70,7 +70,7 @@
     </div>
   
     
-  <div class="btn-actions">
+  <div class="form-data__btn-actions">
       <button type="button" class="btn-reset" (click)="resetForm()">Reiniciar</button>
       <button class="btn-agg" type="submit" [disabled]="form.invalid">Enviar</button>
   </div>

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { map } from "rxjs/operators";
-import { IProduct } from '../pages/interfaces/product.interface';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { IProduct } from '../interfaces/product.interface';
 
 
 

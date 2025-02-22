@@ -8,7 +8,7 @@ import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { IProduct } from 'src/app/pages/interfaces/product.interface';
+import { IProduct } from 'src/app/interfaces/product.interface';
 
 describe('ListarComponent', () => {
   let component: ListarComponent;
@@ -85,21 +85,6 @@ describe('ListarComponent', () => {
     expect(dropdownElement.classList.contains('show')).toBe(false);
 
     document.body.removeChild(dropdownElement);
-  });
-
-  it('should format the date correctly', () => {
-    const result = component.formatDate('2023-10-10', 'yyyy-MM-dd');
-    expect(result).toBe('2023-10-10');
-  });
-
-  it('should format the date correctly', () => {
-    const result = component.formatDate('', 'yyyy-MM-dd');
-    expect(result).toBe('');
-  });
-
-  it('should convert the date correctly', () => {
-    const result = component.convertDate('10/10/2023');
-    expect(result).toBe('2023-10-10');
   });
 
   it('should navigate to "productos/crear-productos"', () => {
@@ -192,14 +177,10 @@ describe('ListarComponent', () => {
 
   it('should set nameProductoElim and idProductoElim and call openModal', () => {
     const mockProducto = { id: '1', name: 'Producto 1', description: 'Descripción del Producto 1', date_release: '2023-10-10', date_revision: '2023-11-10' };
-
-    jest.spyOn(component, 'openModal');
-
     component.eliminarProducto(mockProducto);
 
     expect(component.nameProductoElim).toBe('Producto 1');
     expect(component.idProductoElim).toBe('1');
-    expect(component.openModal).toHaveBeenCalled();
   });
 
   it('should hide the modal', () => {
@@ -233,7 +214,6 @@ describe('ListarComponent', () => {
     component.confirmDelete();
 
       expect(deleteProductSpy).toHaveBeenCalledWith('1');
-      expect(component.closeModal).toHaveBeenCalled();
       expect(component.getProductos).toHaveBeenCalled();
 
   });

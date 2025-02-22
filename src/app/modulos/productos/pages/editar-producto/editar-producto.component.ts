@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { IProduct } from 'src/app/pages/interfaces/product.interface';
-import { CustomValidators } from 'src/app/pages/validator/custom-validators';
+import { IProduct } from 'src/app/interfaces/product.interface';
 import { ProductosService } from 'src/app/services/productos.service';
 
 @Component({
@@ -15,7 +13,7 @@ export class EditarProductoComponent implements OnInit, OnDestroy {
 
   formulario:any;
   fechaLiberacionTmp :any;
-  subscription: Subscription | undefined;
+  subscription: Subscription;
   productEdit: IProduct = {};
   constructor(
     private productoService:ProductosService,
@@ -35,7 +33,9 @@ export class EditarProductoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    localStorage.removeItem('productoEdit')
+    localStorage.removeItem('productoEdit');
+    this.subscription.unsubscribe();
+
   }
 
 }
