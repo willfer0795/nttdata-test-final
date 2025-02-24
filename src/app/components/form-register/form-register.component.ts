@@ -120,8 +120,11 @@ export class FormRegisterComponent implements OnInit {
       ? this.productService.postProduct(objSend)
       : this.productService.updateProduct(objSend, this.editProduct.id);
 
-    action$.subscribe(() => {
-      this.router.navigateByUrl("productos/listar-productos");
+    action$.subscribe({
+      next: () => {
+        this.router.navigateByUrl("productos/listar-productos");
+      },
+      error: error => console.error('Hubo un error:', error)
     });
   }
 

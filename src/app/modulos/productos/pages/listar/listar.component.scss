@@ -41,16 +41,16 @@ table {
       }
     }
     thead {
-        background-color: #f2f2f28c;
-        border-bottom: 2px solid #bbbaba;
+        background-color: var(--color-gray-dark);
+        border-bottom: 2px solid var(--color-gray-dark-light);
         .fa-info-circle {
-          color: #929296;
+          color: var(--color-info-gray);
           font-size: 17px;
         }
     }
     tbody {
         tr{
-            border-bottom: 2px solid #bbbaba;
+            border-bottom: 2px solid var(--color-gray-dark-light);
         }
     }
 }
@@ -69,9 +69,9 @@ table {
   }
   
   .modal-content {
-    background-color: #fefefe;
+    background-color: var(--color-white-light);
     margin: 15% auto;
-    border: 1px solid #888;
+    border: 1px solid var(--color-gray-dark-medium);
     width: 80%;
     max-width: 600px;
     border-radius: 10px;
@@ -80,19 +80,13 @@ table {
         padding-left: 25px;
         padding-right: 25px;
         padding-bottom: 15%;
-        border-bottom: 1px solid #bbbaba;
+        border-bottom: 1px solid var(--color-gray-dark-light);
+        text-align: center;
         span{
             font-weight: 600;
             font-size: 19px;
         }
     }
-  }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
   }
   
   .close:hover,
@@ -117,20 +111,6 @@ table {
         margin: 0 10px;
         width: 50%;
     }
-  }
-  
-  .cancel-btn {
-    background-color: #ccc;
-  }
-  
-  .delete-btn {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .cancel-btn:hover,
-  .delete-btn:hover {
-    opacity: 0.8;
   }
 
   .cont-select{

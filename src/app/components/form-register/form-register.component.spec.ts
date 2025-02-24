@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { of } from 'rxjs';
 import { FormRegisterComponent } from './form-register.component';
@@ -10,13 +10,13 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductosService } from 'src/app/services/productos.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { UtilsService } from 'src/app/services/utils.service';
 
 describe('FormRegisterComponent', () => {
   let component: FormRegisterComponent;
   let fixture: ComponentFixture<FormRegisterComponent>;
-let productosService: ProductosService;
-  let formBuilder: FormBuilder;
-  let httpMock: HttpTestingController;
+  let productosService: ProductosService;
+  let utilService: UtilsService;
   let router: Router;
 
   const mockProduct = {
@@ -25,7 +25,7 @@ let productosService: ProductosService;
     description: 'Descripción del Producto 1',
     logo: 'logo.png',
     date_release: '2023-10-10',
-    date_revision: '2023-11-10'
+    date_revision: undefined
   }
 
   beforeEach(async () => {
@@ -45,6 +45,7 @@ let productosService: ProductosService;
               ProductosService,
               FormBuilder,
               DatePipe,
+              UtilsService,
               { provide: Router, useValue: routerSpy },
             ]
     })
@@ -53,6 +54,7 @@ let productosService: ProductosService;
     fixture = TestBed.createComponent(FormRegisterComponent);
     component = fixture.componentInstance;
     productosService = TestBed.inject(ProductosService); 
+    utilService = TestBed.inject(UtilsService); 
     component.accion = 'E';
     router = TestBed.inject(Router);
     fixture.detectChanges();
@@ -131,11 +133,59 @@ let productosService: ProductosService;
 
     component.resetForm();
 
-    expect(component.form.get('id')?.value).toBeNull();
+    expect(component.form.get('id')?.value).toBe('');
     expect(component.form.get('nombre')?.value).toBeNull();
     expect(component.form.get('descripcion')?.value).toBeNull();
     expect(component.form.get('logo')?.value).toBeNull();
     expect(component.form.get('fechaLiberacion')?.value).toBeNull();
     expect(component.form.get('fechaRevision')?.value).toBeNull();
+  });
+
+  it('should set error if id exists', fakeAsync(() => {
+    const idControl = component.form.get('id');
+    jest.spyOn(productosService, 'validateIdProduct').mockReturnValue(of(true));
+
+    component.setupIdFieldValidation();
+
+    idControl?.setValue('123');
+    tick(500); // Avanza el tiempo para que el debounceTime se complete
+
+    expect(idControl?.hasError('idExists')).toBe(true);
+  }));
+
+  it('should not set error if id does not exist', fakeAsync(() => {
+    const idControl = component.form.get('id');
+    jest.spyOn(productosService, 'validateIdProduct').mockReturnValue(of(false));
+
+    component.setupIdFieldValidation();
+
+    idControl?.setValue('123');
+    tick(500); // Avanza el tiempo para que el debounceTime se complete
+
+    expect(idControl?.hasError('idExists')).toBe(false);
+  }));
+
+  it('should set fechaRevision one year after fechaLiberacion', () => {
+    const control = component.form.get('fechaLiberacion');
+    const fechaInicial = new Date(2023, 0, 1);
+
+    const parseDateSpy = jest.spyOn(utilService, 'parseDate').mockReturnValue(fechaInicial);
+    const formatearFechaSpy = jest.spyOn(utilService, 'formatearFecha').mockReturnValue('01/01/2024');
+
+    control?.setValue('01/01/2023');
+    component.setFechaRevision(control);
+
+    expect(parseDateSpy).toHaveBeenCalledWith('01/01/2023');
+    expect(formatearFechaSpy).toHaveBeenCalled();
+    expect(component.form.get('fechaRevision')?.value).toBe('01/01/2024');
+  });
+
+  it('should not set fechaRevision if fechaLiberacion is not provided', () => {
+    const control = component.form.get('fechaLiberacion');
+
+    control?.setValue(null);
+    component.setFechaRevision(control);
+
+    expect(component.form.get('fechaRevision')?.value).toBe(undefined);
   });
 });

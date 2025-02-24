@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { EditarProductoComponent } from './editar-producto.component';
 import { ProductosService } from 'src/app/services/productos.service';
-import { IProduct } from 'src/app/pages/interfaces/product.interface';
+import { IProduct } from 'src/app/interfaces/product.interface';
 import { jest } from '@jest/globals';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 

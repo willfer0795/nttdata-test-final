@@ -33,11 +33,14 @@ export class ListarComponent implements OnInit {
   }
   getProductos (){
     this.loading = true;
-    this.productoService.getProductos()
-    .subscribe(resp =>{
-      this.getFormatProducts(resp['data'])
-      this.loading = false;
+    this.productoService.getProductos().subscribe({
+      next: data => {
+        this.getFormatProducts(data['data'])
+        this.loading = false;
+      },
+      error: error => console.error('Hubo un error:', error)
     });
+
   }
 
   getFormatProducts(data : []){
