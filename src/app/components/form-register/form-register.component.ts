@@ -19,7 +19,7 @@ export class FormRegisterComponent implements OnInit {
 
   form:any;
   initialDateRelease: string = '';
-  fechaMinima: string = '';
+  minimumDate: string = '';
 
   constructor( private formBuilder: FormBuilder,
       private productService:ProductosService,
@@ -44,7 +44,7 @@ export class FormRegisterComponent implements OnInit {
       nombre: [this.accion === 'E' ? this.editProduct.name : '', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       descripcion: [this.accion === 'E' ? this.editProduct.description : '', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
       logo: [this.accion === 'E' ? this.editProduct.logo : '', Validators.required],
-      fechaLiberacion: [this.accion === 'E' ? this.editProduct.date_release : '', [Validators.required, this.fechaLiberacionValidator.bind(this)]],
+      fechaLiberacion: [this.accion === 'E' ? this.editProduct.date_release : '', [Validators.required, this.dateReleaseValidator.bind(this)]],
       fechaRevision: [{ value: this.accion === 'E' ? this.editProduct.date_revision : '', disabled: true }, [Validators.required]]
     });
   }
@@ -70,39 +70,39 @@ export class FormRegisterComponent implements OnInit {
     }
   }
 
-  private fechaLiberacionValidator(control: any): { [key: string]: boolean } | null {
+  private dateReleaseValidator(control: any): { [key: string]: boolean } | null {
     if (!this.form) {
       return null;
     }
-    const fechaLiberacion = this.utilsService.parseDate(control.value);
+    const dateRelease = this.utilsService.parseDate(control.value);
     const initialDate = this.utilsService.parseDate(this.initialDateRelease);
   
-    const hoy = this.accion === 'C' || initialDate >= new Date() ? new Date() : initialDate;
+    const today = this.accion === 'C' || initialDate >= new Date() ? new Date() : initialDate;
   
-    const fechaLiberacionSinHora = this.utilsService.removeTime(fechaLiberacion);
-    const hoySinHora = this.utilsService.removeTime(hoy);
+    const dateReleaseWHour = this.utilsService.removeTime(dateRelease);
+    const todayWHour = this.utilsService.removeTime(today);
   
-    this.fechaMinima = this.utilsService.formatearFecha(hoySinHora);
+    this.minimumDate = this.utilsService.formatearFecha(todayWHour);
   
-    const isValid = fechaLiberacionSinHora >= hoySinHora;
+    const isValid = dateReleaseWHour >= todayWHour;
     if (isValid) {
-      this.setFechaRevision(control);
+      this.setDateRevision(control);
     }
   
     return isValid ? null : { invalidFechaLiberacion: true };
   }
 
-  setFechaRevision (control: any) {
-    const fechaLiberacionValor = control.value;
-    if (!fechaLiberacionValor) {
+  setDateRevision(control: any) {
+    const dateReleaseValue = control.value;
+    if (!dateReleaseValue) {
       return;
     }
-    const fechaLiberacionDate = this.utilsService.parseDate(fechaLiberacionValor);
-    fechaLiberacionDate.setFullYear(fechaLiberacionDate.getFullYear() + 1);
-    const nuevaFechaRevision = this.utilsService.formatearFecha(fechaLiberacionDate);
+    const dateRelease = this.utilsService.parseDate(dateReleaseValue);
+    dateRelease.setFullYear(dateRelease.getFullYear() + 1);
+    const newDateRevision = this.utilsService.formatearFecha(dateRelease);
   
     this.form.patchValue({
-      fechaRevision: nuevaFechaRevision
+      fechaRevision: newDateRevision
     });
   }
 

@@ -11,8 +11,6 @@ import { Router } from '@angular/router';
 describe('CrearProductoComponent', () => {
   let component: CrearProductoComponent;
   let fixture: ComponentFixture<CrearProductoComponent>;
-  let productosService: ProductosService;
-  let formBuilder: FormBuilder;
   let httpMock: HttpTestingController;
   let mockRouter: jest.Mocked<Router>;
 
@@ -41,8 +39,6 @@ describe('CrearProductoComponent', () => {
     httpMock = TestBed.inject(HttpTestingController);
     fixture = TestBed.createComponent(CrearProductoComponent);
     component = fixture.componentInstance;
-    productosService = TestBed.inject(ProductosService); 
-    formBuilder = TestBed.inject(FormBuilder); 
     fixture.detectChanges();
   });
 
@@ -52,37 +48,6 @@ describe('CrearProductoComponent', () => {
 
   afterEach(() => {
     httpMock.verify();
-  });
-
-  it('postProductos should return success message and data', () => {
-    const requestBody = {
-      "id": "dos",
-      "name": "Operador_PE",
-      "description": "wilooooooooooooo",
-      "logo": "wwww",
-      "date_release": "2024-07-18",
-      "date_revision": "2025-07-18"
-    };
-
-    const expectedResponse = {
-      "message": "Product added successfully",
-      "data": {
-        "id": "dos",
-        "name": "Operador_PE",
-        "description": "wilooooooooooooo",
-        "logo": "wwww",
-        "date_release": "2024-07-18",
-        "date_revision": "2025-07-18"
-      }
-    };
-
-    productosService.postProduct(requestBody).subscribe((response) => {
-      expect(response).toEqual(expectedResponse);
-    });
-
-    const req = httpMock.expectOne('http://localhost:3002/bp/products');
-    expect(req.request.method).toEqual('POST'); 
-    req.flush(expectedResponse);
   });
 
   test('should navigate to list products on return', () => {

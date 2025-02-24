@@ -7,17 +7,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./crear-producto.component.scss']
 })
 export class CrearProductoComponent implements OnInit {
-  formulario:any;
-  fechaLiberacionTmp :any;
   constructor(
     private router:Router
-  ) {
+  ) { }
 
-  }
-
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 
   return = () =>{
     this.router.navigateByUrl("productos/listar-productos")

@@ -5,12 +5,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FormRegisterComponent } from './components/form-register/form-register.component';
 import { ImageLoadComponent } from './components/image-load/image-load.component';
+import { TootlipComponentComponent } from './components/tootlip-component/tootlip-component.component';
 
 
 @NgModule({
   declarations: [
     FormRegisterComponent,
-    ImageLoadComponent
+    ImageLoadComponent,
+    TootlipComponentComponent
   ],
   imports: [
     CommonModule,
@@ -18,10 +20,10 @@ import { ImageLoadComponent } from './components/image-load/image-load.component
     ReactiveFormsModule,
     FormsModule,
     DatePipe,
-    NgxSkeletonLoaderModule,
+    NgxSkeletonLoaderModule, 
   ],
   providers: [DatePipe],
-  exports: [FormRegisterComponent,ImageLoadComponent],
+  exports: [FormRegisterComponent,ImageLoadComponent, TootlipComponentComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA], 
 })
 export class SharedModule { }

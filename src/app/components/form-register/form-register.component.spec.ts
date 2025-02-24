@@ -173,7 +173,7 @@ describe('FormRegisterComponent', () => {
     const formatearFechaSpy = jest.spyOn(utilService, 'formatearFecha').mockReturnValue('01/01/2024');
 
     control?.setValue('01/01/2023');
-    component.setFechaRevision(control);
+    component.setDateRevision(control);
 
     expect(parseDateSpy).toHaveBeenCalledWith('01/01/2023');
     expect(formatearFechaSpy).toHaveBeenCalled();
@@ -184,7 +184,7 @@ describe('FormRegisterComponent', () => {
     const control = component.form.get('fechaLiberacion');
 
     control?.setValue(null);
-    component.setFechaRevision(control);
+    component.setDateRevision(control);
 
     expect(component.form.get('fechaRevision')?.value).toBe(undefined);
   });

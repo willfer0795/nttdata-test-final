@@ -35,7 +35,6 @@ export class EditarProductoComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     localStorage.removeItem('productoEdit');
     this.subscription.unsubscribe();
-
   }
 
 }

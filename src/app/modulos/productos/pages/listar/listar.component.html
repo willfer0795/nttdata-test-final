@@ -1,15 +1,16 @@
 <div class="container">
-    <div  *ngIf="!loading">
-        <div class="header-table">
+    <div>
+        <div [ngClass]="{'hidden': loading}" class="header-table">
             <div class="cont-search">
-                <input (keyup.enter)='buscarPorTexto($event)' placeholder="Buscar..." type="text">
+                <!-- <input (keyup.enter)='buscarPorTexto($event)' placeholder="Buscar..." type="text"> -->
+                <input #searchInput placeholder="Buscar..." type="text">
             </div>
             <div (click)="crearProducto()">
                 <button class="btn-agg">Agregar</button>
             </div>
         </div>
     
-        <div class="cont-table">
+        <div  *ngIf="!loading" class="cont-table">
             <div>
                 <table>
                     <thead>
@@ -17,15 +18,25 @@
                             <th>Logo</th>
                             <th>Nombre del producto</th>
                             <th>Descripcion
-                                <i mat-raised-button matTooltip="Este es un tooltip" matTooltipPosition="right"  class="fa fa-info-circle"></i>
+                                <app-tootlip-component tooltipText="Descripcion del Producto">
+                                    <i class="fa fa-info-circle"></i>
+                                </app-tootlip-component>
                             </th>
-                            <th>Fecha de liberación <i class="fa fa-info-circle"></i></th>
-                            <th>Fecha de reestructuración <i class="fa fa-info-circle"></i></th>
+                            <th>Fecha de liberación 
+                                <app-tootlip-component tooltipText="Fecha de Liberación del Producto">
+                                    <i class="fa fa-info-circle"></i>
+                                </app-tootlip-component>
+                            </th>
+                            <th>Fecha de reestructuración 
+                                <app-tootlip-component tooltipText="Fecha de Reestructuración del Producto">
+                                    <i class="fa fa-info-circle"></i>
+                                </app-tootlip-component>
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of listProductos; let i = index">
+                        <tr *ngFor="let item of listProducts; let i = index">
                             <td>
                                 <app-image-load [src]="item.logo!"></app-image-load>
                                 <!-- <img [src]="item.logo" alt=""> -->
@@ -51,7 +62,7 @@
             </div>
             <div class="cont-select">
                 <div>
-                    <span>{{this.cantResult}} resultados</span>
+                    <span>{{this.quantityResult}} resultados</span>
                 </div>
                 <div>
                     <select (change)="showTable($event)" class="select-form" name="selectcant" id="selectcant">
@@ -137,7 +148,7 @@
 <div class="modal" id="eliminarProductoModal">
     <div class="modal-content">
       <div class="head-modal ">
-        <span>¿Estas seguro de eliminar el producto {{nameProductoElim}}?</span>
+        <span>¿Estas seguro de eliminar el producto {{nameProductDelete}}?</span>
       </div>
       
       <div class="modal-buttons">

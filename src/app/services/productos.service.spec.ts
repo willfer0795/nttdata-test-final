@@ -3,6 +3,9 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ProductosService } from './productos.service';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Endpoints } from '../config/endpoint.enun';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ApiInterceptor } from '../interceptors/api.service';
 
 describe('ProductosService', () => {
   let service: ProductosService;
@@ -13,7 +16,13 @@ describe('ProductosService', () => {
       imports: [
         HttpClientTestingModule,
       ],
-      providers: [ProductosService],
+      providers: [
+        ProductosService,
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: ApiInterceptor,
+          multi: true,
+        },],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     });
     service = TestBed.inject(ProductosService);
@@ -39,7 +48,7 @@ describe('ProductosService', () => {
       expect(products).toEqual(dummyProducts);
     });
 
-    const req = httpMock.expectOne(`${environment.urlBase}/bp/products`);
+    const req = httpMock.expectOne(`${environment.urlBase}${Endpoints.ENUM_PRODUCTS}`);
     expect(req.request.method).toBe('GET');
     req.flush(dummyProducts);
   });
@@ -51,7 +60,7 @@ describe('ProductosService', () => {
       expect(response).toEqual(newProduct);
     });
 
-    const req = httpMock.expectOne(`${environment.urlBase}/bp/products`);
+    const req = httpMock.expectOne(`${environment.urlBase}${Endpoints.ENUM_PRODUCTS}`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(JSON.stringify(newProduct));
     req.flush(newProduct);

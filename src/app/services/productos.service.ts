@@ -4,6 +4,7 @@ import { map } from "rxjs/operators";
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IProduct } from '../interfaces/product.interface';
+import { Endpoints } from '../config/endpoint.enun';
 
 
 
@@ -20,7 +21,7 @@ export class ProductosService {
   constructor( private http: HttpClient,) { }
 
   getProductos() {
-    const url = `${this.urlBase}/bp/products`;
+    const url = Endpoints.ENUM_PRODUCTS;
     return this.http.get(url).pipe(
       map((resp: any) => {
         return resp;
@@ -28,7 +29,7 @@ export class ProductosService {
     );
   }
   postProduct(body: object) {
-    const url = `${this.urlBase}/bp/products`;
+    const url = Endpoints.ENUM_PRODUCTS;
     const bodyrequest = JSON.stringify(body);
     const headers = new HttpHeaders({
       "Content-Type": "application/json",
@@ -40,7 +41,7 @@ export class ProductosService {
     );
   }
   updateProduct(body: object, idProducto:any) {
-    const url = `${this.urlBase}/bp/products/${idProducto}`;
+    const url = `${Endpoints.ENUM_PRODUCTS}${idProducto}`;
     const bodyrequest = JSON.stringify(body);
     const headers = new HttpHeaders({
       "Content-Type": "application/json",
@@ -53,7 +54,7 @@ export class ProductosService {
   }
 
   validateIdProduct(idProducto:any) {
-    const url = `${this.urlBase}/bp/products/verification/${idProducto}`;
+    const url = `${Endpoints.GET_PRODUCTS_VERIFICATION}${idProducto}`;
     return this.http.get(url).pipe(
       map((resp: any) => {
         return resp;
@@ -61,7 +62,7 @@ export class ProductosService {
     );
   }
   deleteProduct(idProducto:any) {
-    const url = `${this.urlBase}/bp/products/${idProducto}`;
+    const url = `${Endpoints.ENUM_PRODUCTS}${idProducto}`;
 
     return this.http.delete(url).pipe(
       map((resp: any) => {

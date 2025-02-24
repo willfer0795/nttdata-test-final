@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProductosService } from 'src/app/services/productos.service';
 import { Router } from '@angular/router';
 import { IProduct } from 'src/app/interfaces/product.interface';
 import { UtilsService } from 'src/app/services/utils.service';
+import { debounceTime, distinctUntilChanged, fromEvent, map } from 'rxjs';
 
 @Component({
   selector: 'app-listar',
@@ -10,19 +11,19 @@ import { UtilsService } from 'src/app/services/utils.service';
   styleUrls: ['./listar.component.scss']
 })
 export class ListarComponent implements OnInit {
+  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
 
   constructor(private productoService:ProductosService,
               private router:Router,
               private utilService: UtilsService) { }
-  listProductos:IProduct [] = [];
-  listProductosBase:IProduct [] = [];
-  nameProductoElim = '';
-  idProductoElim:any;
+  listProducts:IProduct [] = [];
+  listProductsBase:IProduct [] = [];
+  nameProductDelete = '';
+  idProductDelete:any;
 
-  cantidadMostrar = 5;
-  cantResult = 0;
+  quantityShow = 5;
+  quantityResult = 0;
 
-  animation = 'pulse'; 
   loading: boolean = true;
 
   toggleDropdown(i:any) {
@@ -30,6 +31,17 @@ export class ListarComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getProductos ()
+    this.configSearch()
+  }
+   configSearch() {
+    if (this.searchInput) {
+      fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
+        debounceTime(500),
+        distinctUntilChanged()
+      ).subscribe((event: any) => {
+        this.buscarPorTexto(event);
+      });
+    }
   }
   getProductos (){
     this.loading = true;
@@ -38,7 +50,7 @@ export class ListarComponent implements OnInit {
         this.getFormatProducts(data['data'])
         this.loading = false;
       },
-      error: error => console.error('Hubo un error:', error)
+      error: _error => {this.loading = false;}
     });
 
   }
@@ -50,9 +62,9 @@ export class ListarComponent implements OnInit {
         element.date_revision = this.utilService.formatDate(element.date_revision!, 'dd/MM/yyyy')
       });
     }
-    this.listProductosBase=data
-    this.listProductos = this.listProductosBase.slice(0, this.cantidadMostrar);
-    this.cantResult = this.listProductosBase.length;
+    this.listProductsBase=data
+    this.listProducts = this.listProductsBase.slice(0, this.quantityShow);
+    this.quantityResult = this.listProductsBase.length;
   }
 
   crearProducto(){
@@ -72,33 +84,33 @@ export class ListarComponent implements OnInit {
     let valSearch = event.target.value.toLowerCase()
     let tempResult ;
     if (valSearch) {
-      tempResult = this.listProductosBase.filter(product => 
+      tempResult = this.listProductsBase.filter(product => 
         this.utilService.includesText(product.name, valSearch) ||
         this.utilService.includesText(product.description, valSearch) ||
         this.utilService.includesText(product.date_release, valSearch) ||
         this.utilService.includesText(product.date_revision, valSearch)
       )
     } else{
-      tempResult = this.listProductosBase
+      tempResult = this.listProductsBase
     }
 
-    this.cantResult = tempResult.length;
-    this.listProductos = tempResult.slice(0, this.cantidadMostrar);
+    this.quantityResult = tempResult.length;
+    this.listProducts = tempResult.slice(0, this.quantityShow);
   }
 
   showTable(event:any){
     let value = event.target.value
-    if (value > this.listProductosBase.length) {
-      this.cantidadMostrar = this.listProductosBase.length
+    if (value > this.listProductsBase.length) {
+      this.quantityShow = this.listProductsBase.length
     } else {
-      this.cantidadMostrar = event.target.value
+      this.quantityShow = event.target.value
     }
-    this.listProductos = this.listProductosBase.slice(0, this.cantidadMostrar);
+    this.listProducts = this.listProductsBase.slice(0, this.quantityShow);
   }
 
   eliminarProducto(item:any){
-    this.nameProductoElim = item.name
-    this.idProductoElim = item.id
+    this.nameProductDelete = item.name
+    this.idProductDelete = item.id
   
     this.utilService.openModal() 
   }
@@ -107,7 +119,7 @@ export class ListarComponent implements OnInit {
 
 
 confirmDelete() {
-  this.productoService.deleteProduct(this.idProductoElim)
+  this.productoService.deleteProduct(this.idProductDelete)
   .subscribe(resp =>{
     this.utilService.closeModal();
     this.getProductos();

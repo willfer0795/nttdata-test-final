@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
 import { ProductosService } from '../../../../services/productos.service';
 import { By } from '@angular/platform-browser';
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { IProduct } from 'src/app/interfaces/product.interface';
@@ -15,6 +15,7 @@ describe('ListarComponent', () => {
   let fixture: ComponentFixture<ListarComponent>;
   let productosService: ProductosService;
   let router: Router;
+  let inputEl: DebugElement;
   const mockProductos: IProduct[] = [
     { id: '1', name: 'Producto 1', description: 'Descripción del Producto 1', date_release: '2023-10-10', date_revision: '2023-11-10' },
     { id: '2', name: 'Producto 2', description: 'Descripción del Producto 2', date_release: '2023-09-09', date_revision: '2023-10-09' }
@@ -38,21 +39,21 @@ describe('ListarComponent', () => {
     router = TestBed.inject(Router);
     productosService = TestBed.inject(ProductosService);
     fixture.detectChanges();
+
+    inputEl = fixture.debugElement.query(By.css('input'));
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  // Ejemplo de prueba para getProductos()
   it('getProductos should populate listProductosBase', () => {
 
-    // Utiliza jest.spyOn para simular la respuesta del servicio getProductos()
     jest.spyOn(productosService, 'getProductos').mockReturnValue(of({ data: mockProductos }));
 
     component.getProductos();
 
-    expect(component.listProductosBase).toEqual(mockProductos);
+    expect(component.listProductsBase).toEqual(mockProductos);
   });
 
   it('should render listProductos', waitForAsync(() => {
@@ -129,58 +130,58 @@ describe('ListarComponent', () => {
 
   it('should filter listProductosBase by search text', () => {
     
-    component.listProductosBase = mockProductos;
-    component.cantidadMostrar = 10;
+    component.listProductsBase = mockProductos;
+    component.quantityShow = 10;
 
     const event = { target: { value: 'Producto 1' } };
     component.buscarPorTexto(event);
 
-    expect(component.listProductos.length).toBe(1);
-    expect(component.listProductos[0].name).toBe('Producto 1');
-    expect(component.cantResult).toBe(1);
+    expect(component.listProducts.length).toBe(1);
+    expect(component.listProducts[0].name).toBe('Producto 1');
+    expect(component.quantityResult).toBe(1);
   });
 
   it('should filter listProductosBase by search text', () => {
     
-    component.listProductosBase = mockProductos;
-    component.cantidadMostrar = 10;
+    component.listProductsBase = mockProductos;
+    component.quantityShow = 10;
 
     const event = { target: { value: '' } };
     component.buscarPorTexto(event);
 
-    expect(component.listProductos.length).toBe(2);
-    expect(component.cantResult).toBe(2);
+    expect(component.listProducts.length).toBe(2);
+    expect(component.quantityResult).toBe(2);
   });
 
   it('should update cantidadMostrar and listProductos based on event value', () => {
 
-    component.listProductosBase = mockProductos;
+    component.listProductsBase = mockProductos;
 
     const event = { target: { value: 1 } };
     component.showTable(event);
 
-    expect(component.cantidadMostrar).toBe(1);
-    expect(component.listProductos.length).toBe(1);
-    expect(component.listProductos[0].name).toBe('Producto 1');
+    expect(component.quantityShow).toBe(1);
+    expect(component.listProducts.length).toBe(1);
+    expect(component.listProducts[0].name).toBe('Producto 1');
   });
 
   it('should update cantidadMostrar and listProductos based on event value', () => {
 
-    component.listProductosBase = mockProductos;
+    component.listProductsBase = mockProductos;
 
     const event = { target: { value: 5 } };
     component.showTable(event);
 
-    expect(component.cantidadMostrar).toBe(2);
-    expect(component.listProductos.length).toBe(2);
+    expect(component.quantityShow).toBe(2);
+    expect(component.listProducts.length).toBe(2);
   });
 
   it('should set nameProductoElim and idProductoElim and call openModal', () => {
     const mockProducto = { id: '1', name: 'Producto 1', description: 'Descripción del Producto 1', date_release: '2023-10-10', date_revision: '2023-11-10' };
     component.eliminarProducto(mockProducto);
 
-    expect(component.nameProductoElim).toBe('Producto 1');
-    expect(component.idProductoElim).toBe('1');
+    expect(component.nameProductDelete).toBe('Producto 1');
+    expect(component.idProductDelete).toBe('1');
   });
 
   it('should hide the modal', () => {
@@ -206,7 +207,7 @@ describe('ListarComponent', () => {
   });
 
   it('should call deleteProduct, closeModal, and getProductos', () => {
-    component.idProductoElim = '1';
+    component.idProductDelete = '1';
 
     jest.spyOn(component, 'closeModal');
     jest.spyOn(component, 'getProductos');
@@ -216,6 +217,19 @@ describe('ListarComponent', () => {
       expect(deleteProductSpy).toHaveBeenCalledWith('1');
       expect(component.getProductos).toHaveBeenCalled();
 
+  });
+
+  it('should call buscarPorTexto when keyup event occurs', () => {
+    const spy = jest.spyOn(component, 'buscarPorTexto');
+    component.configSearch();
+
+    const input = inputEl.nativeElement;
+    input.value = 'test';
+    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'a' }));
+
+    setTimeout(() => {
+      expect(spy).toHaveBeenCalledWith('test');
+    }, 500);
   });
 });
 

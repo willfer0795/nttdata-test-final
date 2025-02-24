@@ -10,6 +10,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { HeaderComponent } from './components/header/header.component';
 import { SharedModule } from './shared.module';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { ApiInterceptor } from './interceptors/api.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,12 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
   ],
   providers: [
     DatePipe,
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ApiInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
