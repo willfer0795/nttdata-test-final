@@ -16,6 +16,7 @@ describe('ListarComponent', () => {
   let productosService: ProductosService;
   let router: Router;
   let inputEl: DebugElement;
+
   const mockProductos: IProduct[] = [
     { id: '1', name: 'Producto 1', description: 'Descripción del Producto 1', date_release: '2023-10-10', date_revision: '2023-11-10' },
     { id: '2', name: 'Producto 2', description: 'Descripción del Producto 2', date_release: '2023-09-09', date_revision: '2023-10-09' }
@@ -30,7 +31,7 @@ describe('ListarComponent', () => {
         { provide: Router, useValue: routerSpy },
         ProductosService,
         DatePipe
-      ], // Provee el servicio necesario
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
 
@@ -108,7 +109,6 @@ describe('ListarComponent', () => {
       date_revision: '2023-11-11'
     };
 
-    // Sobrescribir localStorage.setItem con una función mock
     const localStorageSetItemMock = jest.fn();
     Object.defineProperty(window, 'localStorage', {
       value: {
@@ -180,29 +180,25 @@ describe('ListarComponent', () => {
     const mockProducto = { id: '1', name: 'Producto 1', description: 'Descripción del Producto 1', date_release: '2023-10-10', date_revision: '2023-11-10' };
     component.eliminarProducto(mockProducto);
 
-    expect(component.nameProductDelete).toBe('Producto 1');
+    expect(component.nameProductDelete).toBe('¿Estás seguro de eliminar el producto Producto 1?');
     expect(component.idProductDelete).toBe('1');
   });
 
   it('should hide the modal', () => {
-    // Crear un elemento simulado en el DOM
     const modal = document.createElement('div');
     modal.id = 'eliminarProductoModal';
     modal.style.display = 'block';
     document.body.appendChild(modal);
 
-    // Asegurarse de que el modal está en el DOM
     expect(document.getElementById('eliminarProductoModal')).not.toBeNull();
 
     component.closeModal();
 
     setTimeout(() => {
-      // Verificar que el estilo display del modal se haya cambiado a 'none'
       expect(modal.style.display).toBe('none');
     }, 500);
     
 
-    // Limpiar el DOM después de la prueba
     document.body.removeChild(modal);
   });
 
@@ -230,6 +226,18 @@ describe('ListarComponent', () => {
     setTimeout(() => {
       expect(spy).toHaveBeenCalledWith('test');
     }, 500);
+  });
+
+  it('should call confirmDelete when value is true', () => {
+    const confirmDeleteSpy = jest.spyOn(component, 'confirmDelete');
+    component.selectOptionDelete(true);
+    expect(confirmDeleteSpy).toHaveBeenCalled();
+  });
+
+  it('should call closeModal when value is false', () => {
+    const closeModalSpy = jest.spyOn(component, 'closeModal');
+    component.selectOptionDelete(false);
+    expect(closeModalSpy).toHaveBeenCalled();
   });
 });
 

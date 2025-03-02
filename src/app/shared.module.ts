@@ -6,13 +6,19 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FormRegisterComponent } from './components/form-register/form-register.component';
 import { ImageLoadComponent } from './components/image-load/image-load.component';
 import { TootlipComponentComponent } from './components/tootlip-component/tootlip-component.component';
+import { SkeletonListarComponent } from './components/skeleton-listar/skeleton-listar.component';
+import { ModalConfirmComponent } from './components/modal-confirm/modal-confirm.component';
+import { ToastComponent } from './components/toast/toast.component';
 
 
 @NgModule({
   declarations: [
     FormRegisterComponent,
     ImageLoadComponent,
-    TootlipComponentComponent
+    TootlipComponentComponent,
+    SkeletonListarComponent,
+    ModalConfirmComponent,
+    ToastComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +29,12 @@ import { TootlipComponentComponent } from './components/tootlip-component/tootli
     NgxSkeletonLoaderModule, 
   ],
   providers: [DatePipe],
-  exports: [FormRegisterComponent,ImageLoadComponent, TootlipComponentComponent],
+  exports: [FormRegisterComponent,
+            ImageLoadComponent, 
+            TootlipComponentComponent,
+            SkeletonListarComponent,
+            ModalConfirmComponent,
+            ToastComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA], 
 })
 export class SharedModule { }

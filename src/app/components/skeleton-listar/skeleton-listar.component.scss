@@ -1,0 +1,13 @@
+.container-skeleton{
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        &-search{
+            width: 50%;
+        }
+        &-btn{
+            width: 50%;
+            text-align: end;
+        }
+    }
+}

@@ -1,4 +1,5 @@
 
+<app-toast></app-toast>
 <form class="form-data" *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
     <div class="form-data__row">
         <div class="form-data__row-col">
@@ -71,8 +72,8 @@
   
     
   <div class="form-data__btn-actions">
-      <button type="button" class="btn-reset" (click)="resetForm()">Reiniciar</button>
-      <button class="btn-agg" type="submit" [disabled]="form.invalid">Enviar</button>
+      <button type="button" class="button button--secondary" (click)="resetForm()">Reiniciar</button>
+      <button class="button button--primary" type="submit" [disabled]="form.invalid || loadingButton">Enviar</button>
   </div>
    
 

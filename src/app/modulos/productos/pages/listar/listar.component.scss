@@ -1,6 +1,3 @@
-.hidden {
-  visibility: hidden;
-}
 .cont-table{
     background-color: white;
     padding: 1%;
@@ -17,13 +14,6 @@
     justify-content: space-between;
     margin-bottom: 1%;
     align-items: center;
-    &__skelet-search{
-      width: 50%;
-    }
-    &__skelet-btn{
-      width: 50%;
-      text-align: end;
-    }
 }
 
 table {
@@ -57,63 +47,9 @@ table {
         }
     }
 }
-
-/* Estilos para el modal */
-.modal {
-    display: none; /* Ocultar inicialmente el modal */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-  
-  .modal-content {
-    background-color: var(--color-white-light);
-    margin: 15% auto;
-    border: 1px solid var(--color-gray-dark-medium);
-    width: 80%;
-    max-width: 600px;
-    border-radius: 10px;
-    .head-modal{
-        padding-top: 30px;
-        padding-left: 25px;
-        padding-right: 25px;
-        padding-bottom: 15%;
-        border-bottom: 1px solid var(--color-gray-dark-light);
-        text-align: center;
-        span{
-            font-weight: 600;
-            font-size: 19px;
-        }
-    }
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
   
   h2 {
     text-align: center;
-  }
-  
-  .modal-buttons {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding-left: 25px;
-    padding-right: 25px;
-    display: flex;
-    button{
-        margin: 0 10px;
-        width: 50%;
-    }
   }
 
   .cont-select{

@@ -1,0 +1,5 @@
+<div (click)="closeMessage()" class="toast-container">
+    <div *ngFor="let message of messages" class="toast" [ngClass]="message.type">
+      {{ message.text }}
+    </div>
+  </div>

@@ -12,10 +12,6 @@ import { debounceTime, distinctUntilChanged, fromEvent, map } from 'rxjs';
 })
 export class ListarComponent implements OnInit {
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
-
-  constructor(private productoService:ProductosService,
-              private router:Router,
-              private utilService: UtilsService) { }
   listProducts:IProduct [] = [];
   listProductsBase:IProduct [] = [];
   nameProductDelete = '';
@@ -25,6 +21,11 @@ export class ListarComponent implements OnInit {
   quantityResult = 0;
 
   loading: boolean = true;
+
+  constructor(private readonly productoService:ProductosService,
+              private readonly router:Router,
+              private readonly utilService: UtilsService) { }
+
 
   toggleDropdown(i:any) {
     this.utilService.toggleDropdown(i)
@@ -100,31 +101,36 @@ export class ListarComponent implements OnInit {
 
   showTable(event:any){
     let value = event.target.value
-    if (value > this.listProductsBase.length) {
-      this.quantityShow = this.listProductsBase.length
-    } else {
-      this.quantityShow = event.target.value
-    }
+    this.quantityShow = value > this.listProductsBase.length ? 
+                        this.listProductsBase.length : 
+                        event.target.value;
     this.listProducts = this.listProductsBase.slice(0, this.quantityShow);
   }
 
   eliminarProducto(item:any){
-    this.nameProductDelete = item.name
+    this.nameProductDelete =`¿Estás seguro de eliminar el producto ${item.name}?` 
     this.idProductDelete = item.id
   
     this.utilService.openModal() 
   }
 
+  selectOptionDelete(value: boolean){
+    if (value) {
+      this.confirmDelete() 
+    } else {
+      this. closeModal()
+    }
+  }
+  
   closeModal() {this.utilService.closeModal();}
 
-
-confirmDelete() {
-  this.productoService.deleteProduct(this.idProductDelete)
-  .subscribe(resp =>{
-    this.utilService.closeModal();
-    this.getProductos();
-  });
-  
-}
+  confirmDelete() {
+    this.productoService.deleteProduct(this.idProductDelete)
+    .subscribe(_resp =>{
+      this.utilService.closeModal();
+      this.getProductos();
+    });
+    
+  }
 
 }

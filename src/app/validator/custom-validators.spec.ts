@@ -1,4 +1,3 @@
-// custom-validators.spec.ts
 import { AbstractControl } from '@angular/forms';
 import { from, of, throwError } from 'rxjs';
 import { ProductosService } from 'src/app/services/productos.service';

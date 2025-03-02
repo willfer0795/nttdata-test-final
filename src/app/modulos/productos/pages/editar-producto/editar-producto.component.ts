@@ -16,8 +16,8 @@ export class EditarProductoComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   productEdit: IProduct = {};
   constructor(
-    private productoService:ProductosService,
-    private router:Router
+    private readonly productoService:ProductosService,
+    private readonly router:Router
   ) {
     this.subscription = this.productoService.product$.subscribe(
       (value:IProduct) => {

@@ -5,9 +5,10 @@
   --color-black: #000000;
   --color-red: #ff0000;
   --color-gray: #bbbbc1;
-  --color-gray-dark-light: #bbbaba;
   --color-gray-dark: #f2f2f28c;
+  --color-gray-dark-light: #bbbaba;
   --color-gray-dark-medium: #888;
+  --color-gray-dark-hight: #bdbdbd8c;
   --color-info-gray: #929296;
   --color-gray-light: #ddd;
   --color-yellow: #ffdd00;
@@ -34,17 +35,20 @@ input,select{
         border-color: var(--color-red);
     }
 }
-button{
+.button{
     border: none;
     border-radius: 5px;
     font-weight: bold;
     padding: 20px 30px;
     cursor: pointer;
     color: var(--color-blue);
-    &.btn-reset{
-        background: rgb(189 189 189 / 55%);
+    &--secondary{
+        background: var(--color-gray-dark-hight);
+        &[disabled] {
+          background-color: var(--color-gray-dark-medium);
+        }
     }
-    &.btn-agg{
+    &--primary{
         background-color: var(--color-yellow);
         &[disabled] {
           background-color: var(--color-yellow-light);
@@ -106,5 +110,11 @@ label{
       }
     }
   }
+  
 html, body { height: 100%; }
+
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.hidden {
+  visibility: hidden;
+}

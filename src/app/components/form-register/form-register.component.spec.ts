@@ -11,6 +11,7 @@ import { ProductosService } from 'src/app/services/productos.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { UtilsService } from 'src/app/services/utils.service';
+import { ToastComponent } from '../toast/toast.component';
 
 describe('FormRegisterComponent', () => {
   let component: FormRegisterComponent;
@@ -18,6 +19,7 @@ describe('FormRegisterComponent', () => {
   let productosService: ProductosService;
   let utilService: UtilsService;
   let router: Router;
+  let toastComponent: ToastComponent;
 
   const mockProduct = {
     id: '1',
@@ -32,7 +34,7 @@ describe('FormRegisterComponent', () => {
     const routerSpy = { navigateByUrl: jest.fn() };
 
     await TestBed.configureTestingModule({
-      declarations: [ FormRegisterComponent ],
+      declarations: [ FormRegisterComponent,ToastComponent ],
       imports: [
               RouterTestingModule,
               HttpClientTestingModule,
@@ -53,6 +55,8 @@ describe('FormRegisterComponent', () => {
     
     fixture = TestBed.createComponent(FormRegisterComponent);
     component = fixture.componentInstance;
+    toastComponent = fixture.debugElement.children[0].componentInstance;
+    component.toastComponent = toastComponent;
     productosService = TestBed.inject(ProductosService); 
     utilService = TestBed.inject(UtilsService); 
     component.accion = 'E';
@@ -64,7 +68,7 @@ describe('FormRegisterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call postProduct and navigate when accion is C', () => {
+  it('should call postProduct and navigate when accion is C', (done) => {
     component.accion = 'C';
     const customerData = {
       id: '1',
@@ -78,7 +82,10 @@ describe('FormRegisterComponent', () => {
     component.onSubmit(customerData);
 
       expect(updateProductSpy).toHaveBeenCalledWith(mockProduct);
-      expect(router.navigateByUrl).toHaveBeenCalledWith('productos/listar-productos');
+      setTimeout(() => {
+        expect(router.navigateByUrl).toHaveBeenCalledWith('productos/listar-productos');
+        done();
+      }, 3000);
   });
 
   it('should call updateProduct and navigate when accion is E', () => {
@@ -96,7 +103,9 @@ describe('FormRegisterComponent', () => {
     component.onSubmit(customerData);
 
       expect(updateProductSpy).toHaveBeenCalledWith(mockProduct, '1');
-      expect(router.navigateByUrl).toHaveBeenCalledWith('productos/listar-productos');
+      setTimeout(() => {
+        expect(router.navigateByUrl).toHaveBeenCalledWith('productos/listar-productos');
+      }, 3000);
 
   });
   it('should reset the form and keep the id value when accion is E', () => {
@@ -148,7 +157,7 @@ describe('FormRegisterComponent', () => {
     component.setupIdFieldValidation();
 
     idControl?.setValue('123');
-    tick(500); // Avanza el tiempo para que el debounceTime se complete
+    tick(500);
 
     expect(idControl?.hasError('idExists')).toBe(true);
   }));
@@ -160,7 +169,7 @@ describe('FormRegisterComponent', () => {
     component.setupIdFieldValidation();
 
     idControl?.setValue('123');
-    tick(500); // Avanza el tiempo para que el debounceTime se complete
+    tick(500);
 
     expect(idControl?.hasError('idExists')).toBe(false);
   }));
@@ -187,5 +196,13 @@ describe('FormRegisterComponent', () => {
     component.setDateRevision(control);
 
     expect(component.form.get('fechaRevision')?.value).toBe(undefined);
+  });
+
+  it('should call showToast on toastComponent with error message', () => {
+    const spyToast =  jest.spyOn(toastComponent, 'showToast');
+    const errorMessage = 'An error occurred';
+    component.showError(errorMessage);
+
+    expect(spyToast).toHaveBeenCalledWith(errorMessage, 'error');
   });
 });

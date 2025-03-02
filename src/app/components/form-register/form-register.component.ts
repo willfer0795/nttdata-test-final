@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductosService } from 'src/app/services/productos.service';
-import { CustomValidators } from '../../validator/custom-validators';
 import { IProduct } from '../../interfaces/product.interface';
 import { debounceTime } from 'rxjs/operators';
 import { UtilsService } from 'src/app/services/utils.service';
+import { ToastComponent } from '../toast/toast.component';
 
 @Component({
   selector: 'app-form-register',
@@ -13,6 +13,7 @@ import { UtilsService } from 'src/app/services/utils.service';
   styleUrls: ['./form-register.component.scss']
 })
 export class FormRegisterComponent implements OnInit {
+  @ViewChild(ToastComponent) toastComponent!: ToastComponent;
 
   @Input() accion:string = '';
   @Input() editProduct:IProduct = {};
@@ -20,17 +21,17 @@ export class FormRegisterComponent implements OnInit {
   form:any;
   initialDateRelease: string = '';
   minimumDate: string = '';
+  loadingButton: boolean = false;
 
-  constructor( private formBuilder: FormBuilder,
-      private productService:ProductosService,
-      private router:Router,
-      private utilsService: UtilsService
+  constructor( private readonly formBuilder: FormBuilder,
+      private readonly productService:ProductosService,
+      private readonly router:Router,
+      private readonly utilsService: UtilsService
     ) {         
       }
 
   ngOnInit(): void {
-    // Guardar el valor inicial de date_release
-    this.initialDateRelease = this.editProduct?.date_release || '';
+    this.initialDateRelease = this.editProduct?.date_release ?? '';
     this.initializeForm();
     this.setupIdFieldValidation();
   }
@@ -120,11 +121,19 @@ export class FormRegisterComponent implements OnInit {
       ? this.productService.postProduct(objSend)
       : this.productService.updateProduct(objSend, this.editProduct.id);
 
+    this.loadingButton = true;
     action$.subscribe({
       next: () => {
-        this.router.navigateByUrl("productos/listar-productos");
+        this.showSuccess()
+        setTimeout(() => {
+          this.router.navigateByUrl("productos/listar-productos");
+        }, 1500);
+        this.loadingButton = false;
       },
-      error: error => console.error('Hubo un error:', error)
+      error: error => {
+        this.showError(error.message)
+        this.loadingButton = false;
+      }
     });
   }
 
@@ -134,6 +143,14 @@ export class FormRegisterComponent implements OnInit {
       id: this.accion === 'E' ? idValue : ''
     });
 
+  }
+
+  showSuccess() {
+    this.toastComponent.showToast('Operation Successful!', 'success');
+  }
+
+  showError(error:any) {
+    this.toastComponent.showToast(error, 'error');
   }
 
 }
