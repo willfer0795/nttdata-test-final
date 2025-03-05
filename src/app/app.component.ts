@@ -9,7 +9,7 @@ import { ProductosService } from './services/productos.service';
 export class AppComponent  implements OnInit {
   title = 'nttdata-test';
 
-  constructor(private productoService:ProductosService) { }
+  constructor(private readonly productoService:ProductosService) { }
 
   ngOnInit(): void {
     let productoEdit = localStorage.getItem('productoEdit');

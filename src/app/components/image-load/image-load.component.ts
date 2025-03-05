@@ -7,9 +7,11 @@ import { Component, Input } from '@angular/core';
 })
 export class ImageLoadComponent {
   @Input() src: string = '';
+  @Input() idImg: string | undefined = '';
   isLoading: boolean = true;
-
   onLoad() {
     this.isLoading = false;
   }
 }
+
+

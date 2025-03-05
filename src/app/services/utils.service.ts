@@ -5,7 +5,7 @@ import { DatePipe } from '@angular/common';
 })
 export class UtilsService {
 
-  constructor(private datePipe: DatePipe) { }
+  constructor(private readonly datePipe: DatePipe) { }
 
   formatearFecha(fecha: Date): string {
     const anio = fecha.getFullYear();
@@ -40,15 +40,15 @@ export class UtilsService {
       }
     }
 
-    openModal() {
-      const modal = document.getElementById('eliminarProductoModal');
+    openModal(id:string) {
+      const modal = document.getElementById(id);
       if (modal) {
         modal.style.display = 'block';
       }
     }
     
-     closeModal() {
-      const modal = document.getElementById('eliminarProductoModal');
+     closeModal(id:string) {
+      const modal = document.getElementById(id);
       if (modal) {
         modal.style.display = 'none';
       }

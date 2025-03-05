@@ -3,7 +3,7 @@ import { ProductosService } from 'src/app/services/productos.service';
 import { Router } from '@angular/router';
 import { IProduct } from 'src/app/interfaces/product.interface';
 import { UtilsService } from 'src/app/services/utils.service';
-import { debounceTime, distinctUntilChanged, fromEvent, map } from 'rxjs';
+import { debounceTime, distinctUntilChanged, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-listar',
@@ -111,7 +111,7 @@ export class ListarComponent implements OnInit {
     this.nameProductDelete =`¿Estás seguro de eliminar el producto ${item.name}?` 
     this.idProductDelete = item.id
   
-    this.utilService.openModal() 
+    this.utilService.openModal('eliminarProductoModal') 
   }
 
   selectOptionDelete(value: boolean){
@@ -122,12 +122,12 @@ export class ListarComponent implements OnInit {
     }
   }
   
-  closeModal() {this.utilService.closeModal();}
+  closeModal() {this.utilService.closeModal('eliminarProductoModal');}
 
   confirmDelete() {
     this.productoService.deleteProduct(this.idProductDelete)
     .subscribe(_resp =>{
-      this.utilService.closeModal();
+      this.closeModal();
       this.getProductos();
     });
     

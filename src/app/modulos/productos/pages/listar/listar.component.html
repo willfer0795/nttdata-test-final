@@ -38,7 +38,7 @@
                 <tbody>
                     <tr *ngFor="let item of listProducts; let i = index">
                         <td>
-                            <app-image-load [src]="item.logo!"></app-image-load>
+                            <app-image-load [idImg]="item.id" [src]="item.logo!"></app-image-load>
                             <!-- <img [src]="item.logo" alt=""> -->
                         </td>
                         <td>{{item.name}}</td>

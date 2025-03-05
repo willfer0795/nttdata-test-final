@@ -18,7 +18,7 @@ export class ProductosService {
   public product$: BehaviorSubject<IProduct> =
     new BehaviorSubject<IProduct>({});
 
-  constructor( private http: HttpClient,) { }
+  constructor( private readonly http: HttpClient,) { }
 
   getProductos() {
     const url = Endpoints.ENUM_PRODUCTS;
