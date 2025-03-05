@@ -30,6 +30,14 @@ export class UtilsService {
     }
 
     toggleDropdown(i:any) {
+
+      const allDropdowns = document.querySelectorAll('.show');
+      allDropdowns.forEach((dropdown) => {
+        if (dropdown.id !== `drop_${i}`) {
+          dropdown.classList.remove('show');
+        }
+      });
+
       let objTxt = document.getElementById(`drop_${i}`) as HTMLTextAreaElement;
       if (objTxt) {
         if (objTxt.classList.contains('show')) {

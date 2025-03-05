@@ -70,6 +70,8 @@ label{
 .dropdown {
     position: relative;
     display: inline-block;
+    width: 100%;
+    cursor: pointer;
     i{
         font-size: 20px;
     }

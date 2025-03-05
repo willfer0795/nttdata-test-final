@@ -45,9 +45,9 @@
                         <td>{{item.description}}</td>
                         <td>{{item.date_release}}</td>
                         <td>{{item.date_revision}}</td>
-                        <td>
+                        <td (click)="toggleDropdown(i)">
                             <div class="dropdown">
-                                <span class="dropdown-toggle" (click)="toggleDropdown(i)">
+                                <span class="dropdown-toggle">
                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                 </span>
                                 <div id="drop_{{i}}" class="dropdown-menu">
