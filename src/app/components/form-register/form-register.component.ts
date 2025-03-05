@@ -128,7 +128,6 @@ export class FormRegisterComponent implements OnInit {
         setTimeout(() => {
           this.router.navigateByUrl("productos/listar-productos");
         }, 1500);
-        this.loadingButton = false;
       },
       error: error => {
         this.showError(error.message)
