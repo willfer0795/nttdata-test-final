@@ -39,7 +39,7 @@ input,select{
     border: none;
     border-radius: 5px;
     font-weight: bold;
-    padding: 20px 30px;
+    padding: 15px 30px;
     cursor: pointer;
     color: var(--color-blue);
     &--secondary{
@@ -56,7 +56,7 @@ input,select{
     }
 }
 label{
-    font-weight: bold;
+    font-weight: 500;
 }
 .btn-actions{
   display: flex  ;
@@ -114,8 +114,6 @@ label{
   }
   
 html, body { height: 100%; }
-
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .hidden {
   visibility: hidden;
