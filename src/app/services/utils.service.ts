@@ -7,7 +7,7 @@ export class UtilsService {
 
   constructor(private readonly datePipe: DatePipe) { }
 
-  formatearFecha(fecha: Date): string {
+  dateFormat(fecha: Date): string {
     const anio = fecha.getFullYear();
     const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
     const dia = fecha.getDate().toString().padStart(2, '0');

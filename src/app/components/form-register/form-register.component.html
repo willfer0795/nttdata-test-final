@@ -15,26 +15,26 @@
           </div>
         
           <div class="form-data__row-col">
-            <label for="nombre">Nombre:</label>
-            <input [ngClass]="{'error': form.get('nombre')?.touched &&  form.get('nombre')?.errors}"
-            id="nombre" formControlName="nombre">
-            <div class="form-data__row-col-errors" *ngIf="form.get('nombre')?.invalid && form.get('nombre')?.touched">
-              <span *ngIf="form.get('nombre')?.errors?.['required']" style="color: red;">Nombre no válido</span>
-              <span *ngIf="form.get('nombre')?.errors?.['minlength']" style="color: red;">Nombre debe tener al menos 5 caracteres</span>
-              <span *ngIf="form.get('nombre')?.errors?.['maxlength']" style="color: red;">Nombre no puede tener más de 100 caracteres</span>
+            <label for="name">Nombre:</label>
+            <input [ngClass]="{'error': form.get('name')?.touched &&  form.get('name')?.errors}"
+            id="name" formControlName="name">
+            <div class="form-data__row-col-errors" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+              <span *ngIf="form.get('name')?.errors?.['required']" style="color: red;">Nombre no válido</span>
+              <span *ngIf="form.get('name')?.errors?.['minlength']" style="color: red;">Nombre debe tener al menos 5 caracteres</span>
+              <span *ngIf="form.get('name')?.errors?.['maxlength']" style="color: red;">Nombre no puede tener más de 100 caracteres</span>
             </div>
           </div>
     </div>
     
     <div class="form-data__row">
         <div class="form-data__row-col">
-            <label for="descripcion">Descripción:</label>
-            <input [ngClass]="{'error':form.get('descripcion')?.touched &&  form.get('descripcion')?.errors}"
-            id="descripcion" formControlName="descripcion">
-            <div class="form-data__row-col-errors" *ngIf="form.get('descripcion')?.invalid && form.get('descripcion')?.touched">
-              <span *ngIf="form.get('descripcion')?.errors?.['required']" style="color: red;">Descripción no válida</span>
-              <span *ngIf="form.get('descripcion')?.errors?.['minlength']" style="color: red;">Descripción debe tener al menos 10 caracteres</span>
-              <span *ngIf="form.get('descripcion')?.errors?.['maxlength']" style="color: red;">Descripción no puede tener más de 200 caracteres</span>
+            <label for="description">Descripción:</label>
+            <input [ngClass]="{'error':form.get('description')?.touched &&  form.get('description')?.errors}"
+            id="description" formControlName="description">
+            <div class="form-data__row-col-errors" *ngIf="form.get('description')?.invalid && form.get('description')?.touched">
+              <span *ngIf="form.get('description')?.errors?.['required']" style="color: red;">Descripción no válida</span>
+              <span *ngIf="form.get('description')?.errors?.['minlength']" style="color: red;">Descripción debe tener al menos 10 caracteres</span>
+              <span *ngIf="form.get('description')?.errors?.['maxlength']" style="color: red;">Descripción no puede tener más de 200 caracteres</span>
             </div>
           </div>
         
@@ -50,22 +50,21 @@
    
     <div class="form-data__row">
         <div class="form-data__row-col">
-            <label for="fechaLiberacion">Fecha de Liberación:</label>
-            <input [ngClass]="{'error':form.get('fechaLiberacion')?.touched && form.get('fechaLiberacion')?.errors}"
-             id="fechaLiberacion" [min]="minimumDate" formControlName="fechaLiberacion" type="date">
-            <div class="form-data__row-col-errors" *ngIf="form.get('fechaLiberacion')?.invalid && form.get('fechaLiberacion')?.touched">
-              <span *ngIf="form.get('fechaLiberacion')?.errors?.['required']" style="color: red;">Fecha de liberación no válida</span>
-              <span *ngIf="form.get('fechaLiberacion')?.errors?.['invalidFechaLiberacion']" style="color: red;">Fecha debe ser igual o mayor a la fecha actual</span>
+            <label for="dateRelease">Fecha de Liberación:</label>
+            <input [ngClass]="{'error':form.get('dateRelease')?.touched && form.get('dateRelease')?.errors}"
+             id="dateRelease" [min]="minimumDate" formControlName="dateRelease" type="date">
+            <div class="form-data__row-col-errors" *ngIf="form.get('dateRelease')?.invalid && form.get('dateRelease')?.touched">
+              <span *ngIf="form.get('dateRelease')?.errors?.['required']" style="color: red;">Fecha de liberación no válida</span>
+              <span *ngIf="form.get('dateRelease')?.errors?.['invalidDateRelease']" style="color: red;">Fecha debe ser igual o mayor a la fecha actual</span>
             </div>
           </div>
         
           <div class="form-data__row-col">
-            <label for="fechaRevision">Fecha de Revisión:</label>
-            <input [ngClass]="{'error':form.get('fechaRevision')?.touched && form.get('fechaRevision')?.errors}" 
-            id="fechaRevision" formControlName="fechaRevision" type="date">
-            <div class="form-data__row-col-errors" *ngIf="form.get('fechaRevision')?.invalid && form.get('fechaRevision')?.touched">
-              <span *ngIf="form.get('fechaRevision')?.errors?.['required']" style="color: red;">Fecha de revisión no válida</span>
-              <span *ngIf="form.get('fechaRevision')?.errors?.['invalidFechaRevision']" style="color: red;">Fecha debe ser exactamente un año posterior a la fecha de liberación</span>
+            <label for="dateRevision">Fecha de Revisión:</label>
+            <input [ngClass]="{'error':form.get('dateRevision')?.touched && form.get('dateRevision')?.errors}" 
+            id="dateRevision" formControlName="dateRevision" type="date">
+            <div class="form-data__row-col-errors" *ngIf="form.get('dateRevision')?.invalid && form.get('dateRevision')?.touched">
+              <span *ngIf="form.get('dateRevision')?.errors?.['required']" style="color: red;">Fecha de revisión no válida</span>
             </div>
           </div>
     </div>

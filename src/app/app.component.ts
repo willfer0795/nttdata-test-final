@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductosService } from './services/productos.service';
+import { ProductsService } from './services/products.service';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +9,11 @@ import { ProductosService } from './services/productos.service';
 export class AppComponent  implements OnInit {
   title = 'nttdata-test';
 
-  constructor(private readonly productoService:ProductosService) { }
+  constructor(private readonly productoService:ProductsService) { }
 
   ngOnInit(): void {
-    let productoEdit = localStorage.getItem('productoEdit');
-    let dataProd = productoEdit ? JSON.parse(productoEdit) : null;
+    let productEdit = localStorage.getItem('productEdit');
+    let dataProd = productEdit ? JSON.parse(productEdit) : {};
 
     this.productoService.setProduct(dataProd);
   }

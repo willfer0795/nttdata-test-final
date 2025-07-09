@@ -1,14 +1,14 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ProductosService } from 'src/app/services/productos.service';
+import { ProductsService } from 'src/app/services/products.service';
 import { Router } from '@angular/router';
 import { IProduct } from 'src/app/interfaces/product.interface';
 import { UtilsService } from 'src/app/services/utils.service';
 import { debounceTime, distinctUntilChanged, fromEvent } from 'rxjs';
 
 @Component({
-  selector: 'app-listar',
-  templateUrl: './listar.component.html',
-  styleUrls: ['./listar.component.scss']
+  selector: 'app-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss']
 })
 export class ListarComponent implements OnInit {
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
@@ -22,7 +22,7 @@ export class ListarComponent implements OnInit {
 
   loading: boolean = true;
 
-  constructor(private readonly productoService:ProductosService,
+  constructor(private readonly productService:ProductsService,
               private readonly router:Router,
               private readonly utilService: UtilsService) { }
 
@@ -31,7 +31,7 @@ export class ListarComponent implements OnInit {
     this.utilService.toggleDropdown(i)
   }
   ngOnInit(): void {
-    this.getProductos ()
+    this.getProducts ()
     this.configSearch()
   }
    configSearch() {
@@ -40,13 +40,13 @@ export class ListarComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged()
       ).subscribe((event: any) => {
-        this.buscarPorTexto(event);
+        this.searchByTexto(event);
       });
     }
   }
-  getProductos (){
+  getProducts (){
     this.loading = true;
-    this.productoService.getProductos().subscribe({
+    this.productService.getProducts().subscribe({
       next: data => {
         this.getFormatProducts(data['data'])
         this.loading = false;
@@ -57,31 +57,27 @@ export class ListarComponent implements OnInit {
   }
 
   getFormatProducts(data : []){
-    if (data.length > 0) {
-      data.forEach((element:IProduct) => {
-        element.date_release = this.utilService.formatDate(element.date_release!, 'dd/MM/yyyy')
-        element.date_revision = this.utilService.formatDate(element.date_revision!, 'dd/MM/yyyy')
-      });
-    }
     this.listProductsBase=data
     this.listProducts = this.listProductsBase.slice(0, this.quantityShow);
     this.quantityResult = this.listProductsBase.length;
   }
 
-  crearProducto(){
-    this.router.navigateByUrl("productos/crear-productos")
+  createProduct(){
+    this.productService.setAction("C");
+    this.router.navigateByUrl("products/manage-products")
   }
   
-  editarProducto(producto:IProduct){
-    producto.date_release = this.utilService.convertDate(producto.date_release!)
-    producto.date_revision = this.utilService.convertDate(producto.date_revision!)
+  editProduct(product:IProduct){
+    product.date_release = this.utilService.convertDate(product.date_release!)
+    product.date_revision = this.utilService.convertDate(product.date_revision!)
 
-    localStorage.setItem('productoEdit', JSON.stringify(producto))
-    this.productoService.setProduct(producto);
-    this.router.navigateByUrl("productos/editar-productos")
+    localStorage.setItem('productEdit', JSON.stringify(product))
+    this.productService.setAction("E");
+    this.productService.setProduct(product);
+    this.router.navigateByUrl("products/manage-products")
   }
   
-  buscarPorTexto(event:any){
+  searchByTexto(event:any){
     let valSearch = event.target.value.toLowerCase()
     let tempResult ;
     if (valSearch) {
@@ -107,11 +103,11 @@ export class ListarComponent implements OnInit {
     this.listProducts = this.listProductsBase.slice(0, this.quantityShow);
   }
 
-  eliminarProducto(item:any){
+  deleteProduct(item:any){
     this.nameProductDelete =`¿Estás seguro de eliminar el producto ${item.name}?` 
     this.idProductDelete = item.id
   
-    this.utilService.openModal('eliminarProductoModal') 
+    this.utilService.openModal('deleteProductModal') 
   }
 
   selectOptionDelete(value: boolean){
@@ -122,13 +118,13 @@ export class ListarComponent implements OnInit {
     }
   }
   
-  closeModal() {this.utilService.closeModal('eliminarProductoModal');}
+  closeModal() {this.utilService.closeModal('deleteProductModal');}
 
   confirmDelete() {
-    this.productoService.deleteProduct(this.idProductDelete)
+    this.productService.deleteProduct(this.idProductDelete)
     .subscribe(_resp =>{
       this.closeModal();
-      this.getProductos();
+      this.getProducts();
     });
     
   }

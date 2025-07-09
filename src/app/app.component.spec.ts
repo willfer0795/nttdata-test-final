@@ -2,15 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ProductosService } from './services/productos.service';
+import { ProductsService } from './services/products.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  let productoService: ProductosService;
+  let productService: ProductsService;
 
   beforeEach(() => {
-    const productoServiceSpy = {
+    const productServiceSpy = { 
       setProduct: jest.fn()
     };
 
@@ -20,14 +20,14 @@ describe('AppComponent', () => {
               ],
       declarations: [AppComponent],
       providers: [
-        { provide: ProductosService, useValue: productoServiceSpy }
+        { provide: ProductsService, useValue: productServiceSpy }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-    productoService = TestBed.inject(ProductosService);
+    productService = TestBed.inject(ProductsService);
   });
 
   describe('ngOnInit', () => {
@@ -43,7 +43,7 @@ describe('AppComponent', () => {
 
       component.ngOnInit();
 
-      expect(productoService.setProduct).toHaveBeenCalledWith(mockProduct);
+      expect(productService.setProduct).toHaveBeenCalledWith(mockProduct);
     });
 
     it('should set product to null if localStorage is empty', () => {
@@ -57,7 +57,7 @@ describe('AppComponent', () => {
 
       component.ngOnInit();
 
-      expect(productoService.setProduct).toHaveBeenCalledWith(null);
+      expect(productService.setProduct).toHaveBeenCalledWith({});
     });
   });
 

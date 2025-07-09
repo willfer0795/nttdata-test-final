@@ -1,25 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
-import { ProductosRoutingModule } from './productos-routing.module';
+import { ProductsRoutingModule } from './products-routing.module';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SharedModule } from 'src/app/shared.module';
-import { CrearProductoComponent } from './pages/crear-producto/crear-producto.component';
-import { ListarComponent } from './pages/listar/listar.component';
-import { EditarProductoComponent } from './pages/editar-producto/editar-producto.component';
+import { ListarComponent } from './pages/list/list.component';
+import { ManageProductsComponent } from './pages/manage-products/manage-products.component';
 
 
 @NgModule({
   declarations: [
-    CrearProductoComponent,
     ListarComponent,
-    EditarProductoComponent
+    ManageProductsComponent
   ],
   imports: [
     CommonModule,
-    ProductosRoutingModule,
+    ProductsRoutingModule,
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
@@ -28,4 +26,4 @@ import { EditarProductoComponent } from './pages/editar-producto/editar-producto
   ],
   providers: [DatePipe]
 })
-export class ProductosModule { }
+export class ProductsModule { }

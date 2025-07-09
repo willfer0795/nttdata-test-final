@@ -1,14 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ProductosService } from './productos.service';
+import { ProductsService } from './products.service';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Endpoints } from '../config/endpoint.enun';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiInterceptor } from '../interceptors/api.service';
+import { DatePipe } from '@angular/common';
 
-describe('ProductosService', () => {
-  let service: ProductosService;
+describe('ProductsService', () => {
+  let service: ProductsService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -17,15 +18,16 @@ describe('ProductosService', () => {
         HttpClientTestingModule,
       ],
       providers: [
-        ProductosService,
+        ProductsService,
         {
           provide: HTTP_INTERCEPTORS,
           useClass: ApiInterceptor,
           multi: true,
-        },],
+        },
+        DatePipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     });
-    service = TestBed.inject(ProductosService);
+    service = TestBed.inject(ProductsService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -43,7 +45,7 @@ describe('ProductosService', () => {
       { id: '2', name: 'Product 2', description: 'Description 2' }
     ];
 
-    service.getProductos().subscribe(products => {
+    service.getProducts().subscribe(products => {
       expect(products.length).toBe(2);
       expect(products).toEqual(dummyProducts);
     });

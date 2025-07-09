@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ProductosService } from 'src/app/services/productos.service';
+import { ProductsService } from 'src/app/services/products.service';
 import { IProduct } from '../../interfaces/product.interface';
 import { debounceTime } from 'rxjs/operators';
 import { UtilsService } from 'src/app/services/utils.service';
@@ -15,7 +15,7 @@ import { ToastComponent } from '../toast/toast.component';
 export class FormRegisterComponent implements OnInit {
   @ViewChild(ToastComponent) toastComponent!: ToastComponent;
 
-  @Input() accion:string = '';
+  @Input() action:string = '';
   @Input() editProduct:IProduct = {};
 
   form:any;
@@ -24,7 +24,7 @@ export class FormRegisterComponent implements OnInit {
   loadingButton: boolean = false;
 
   constructor( private readonly formBuilder: FormBuilder,
-      private readonly productService:ProductosService,
+      private readonly productService:ProductsService,
       private readonly router:Router,
       private readonly utilsService: UtilsService
     ) {         
@@ -39,14 +39,14 @@ export class FormRegisterComponent implements OnInit {
   private initializeForm(): void {
     this.form = this.formBuilder.group({
       id: [{ 
-        value: this.accion === 'E' ? this.editProduct.id : '', 
-        disabled: this.accion === 'E'
+        value: this.action === 'E' ? this.editProduct.id : '', 
+        disabled: this.action === 'E'
       }, [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
-      nombre: [this.accion === 'E' ? this.editProduct.name : '', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      descripcion: [this.accion === 'E' ? this.editProduct.description : '', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
-      logo: [this.accion === 'E' ? this.editProduct.logo : '', Validators.required],
-      fechaLiberacion: [this.accion === 'E' ? this.editProduct.date_release : '', [Validators.required, this.dateReleaseValidator.bind(this)]],
-      fechaRevision: [{ value: this.accion === 'E' ? this.editProduct.date_revision : '', disabled: true }, [Validators.required]]
+      name: [this.action === 'E' ? this.editProduct.name : '', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      description: [this.action === 'E' ? this.editProduct.description : '', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+      logo: [this.action === 'E' ? this.editProduct.logo : '', Validators.required],
+      dateRelease: [this.action === 'E' ? this.editProduct.date_release : '', [Validators.required, this.dateReleaseValidator.bind(this)]],
+      dateRevision: [{ value: this.action === 'E' ? this.editProduct.date_revision : '', disabled: true }, [Validators.required]]
     });
   }
 
@@ -78,19 +78,19 @@ export class FormRegisterComponent implements OnInit {
     const dateRelease = this.utilsService.parseDate(control.value);
     const initialDate = this.utilsService.parseDate(this.initialDateRelease);
   
-    const today = this.accion === 'C' || initialDate >= new Date() ? new Date() : initialDate;
+    const today = this.action === 'C' || initialDate >= new Date() ? new Date() : initialDate;
   
     const dateReleaseWHour = this.utilsService.removeTime(dateRelease);
     const todayWHour = this.utilsService.removeTime(today);
   
-    this.minimumDate = this.utilsService.formatearFecha(todayWHour);
+    this.minimumDate = this.utilsService.dateFormat(todayWHour);
   
     const isValid = dateReleaseWHour >= todayWHour;
     if (isValid) {
       this.setDateRevision(control);
     }
   
-    return isValid ? null : { invalidFechaLiberacion: true };
+    return isValid ? null : { invalidDateRelease: true };
   }
 
   setDateRevision(control: any) {
@@ -100,24 +100,24 @@ export class FormRegisterComponent implements OnInit {
     }
     const dateRelease = this.utilsService.parseDate(dateReleaseValue);
     dateRelease.setFullYear(dateRelease.getFullYear() + 1);
-    const newDateRevision = this.utilsService.formatearFecha(dateRelease);
+    const newDateRevision = this.utilsService.dateFormat(dateRelease);
   
     this.form.patchValue({
-      fechaRevision: newDateRevision
+      dateRevision: newDateRevision
     });
   }
 
   onSubmit(customerData: any): void {
     const objSend = {
-      id: this.accion === 'E' ? this.editProduct.id : customerData.id,
-      name: customerData.nombre,
-      description: customerData.descripcion,
+      id: this.action === 'E' ? this.editProduct.id : customerData.id,
+      name: customerData.name,
+      description: customerData.description,
       logo: customerData.logo,
-      date_release: customerData.fechaLiberacion,
-      date_revision: this.form.get('fechaRevision')?.value
+      date_release: customerData.dateRelease,
+      date_revision: this.form.get('dateRevision')?.value
     };
 
-    const action$ = this.accion === 'C' 
+    const action$ = this.action === 'C' 
       ? this.productService.postProduct(objSend)
       : this.productService.updateProduct(objSend, this.editProduct.id);
 
@@ -126,7 +126,7 @@ export class FormRegisterComponent implements OnInit {
       next: () => {
         this.showSuccess()
         setTimeout(() => {
-          this.router.navigateByUrl("productos/listar-productos");
+          this.router.navigateByUrl("products/list-products");
         }, 1500);
       },
       error: error => {
@@ -139,7 +139,7 @@ export class FormRegisterComponent implements OnInit {
   resetForm = () => {
     const idValue = this.form.get('id')?.value;
     this.form.reset({
-      id: this.accion === 'E' ? idValue : ''
+      id: this.action === 'E' ? idValue : ''
     });
 
   }

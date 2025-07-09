@@ -5,36 +5,46 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IProduct } from '../interfaces/product.interface';
 import { Endpoints } from '../config/endpoint.enun';
+import { UtilsService } from './utils.service';
 
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductosService {
+export class ProductsService {
 
   urlBase = environment.urlBase;
 
   public product$: BehaviorSubject<IProduct> =
     new BehaviorSubject<IProduct>({});
 
-  constructor( private readonly http: HttpClient,) { }
+  public productAction$: BehaviorSubject<string> =
+  new BehaviorSubject<string>("");
 
-  getProductos() {
-    const url = Endpoints.ENUM_PRODUCTS;
-    return this.http.get(url).pipe(
+  constructor( private readonly http: HttpClient,private readonly utilService: UtilsService) { }
+
+  getProducts() {
+    return this.http.get(Endpoints.ENUM_PRODUCTS).pipe(
       map((resp: any) => {
+        let data = resp['data'];
+        if (data.length > 0) {
+          data.forEach((element:IProduct) => {
+            element.date_release = this.utilService.formatDate(element.date_release!, 'dd/MM/yyyy')
+            element.date_revision = this.utilService.formatDate(element.date_revision!, 'dd/MM/yyyy')
+          });
+        }
+        resp['data'] = data;
         return resp;
       })
     );
   }
   postProduct(body: object) {
-    const url = Endpoints.ENUM_PRODUCTS;
     const bodyrequest = JSON.stringify(body);
     const headers = new HttpHeaders({
       "Content-Type": "application/json",
     });
-    return this.http.post(url, bodyrequest, { headers }).pipe(
+    return this.http.post(Endpoints.ENUM_PRODUCTS, bodyrequest, { headers }).pipe(
       map((resp: any) => {
         return resp;
       })
@@ -73,5 +83,9 @@ export class ProductosService {
 
   public setProduct(newProduct: IProduct): void {
     this.product$.next(newProduct);
+  }
+
+  public setAction(action: string): void {
+    this.productAction$.next(action);
   }
 }

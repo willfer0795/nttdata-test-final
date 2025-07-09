@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ListarComponent } from './listar.component';
+import { ListarComponent } from './list.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
-import { ProductosService } from '../../../../services/productos.service';
+import { ProductsService } from '../../../../services/products.service';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { IProduct } from 'src/app/interfaces/product.interface';
 
-describe('ListarComponent', () => {
+describe('ListComponent', () => {
   let component: ListarComponent;
   let fixture: ComponentFixture<ListarComponent>;
-  let productosService: ProductosService;
+  let productosService: ProductsService;
   let router: Router;
   let inputEl: DebugElement;
 
@@ -29,7 +29,7 @@ describe('ListarComponent', () => {
       imports: [RouterTestingModule, HttpClientModule], 
       providers: [
         { provide: Router, useValue: routerSpy },
-        ProductosService,
+        ProductsService,
         DatePipe
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
@@ -38,7 +38,7 @@ describe('ListarComponent', () => {
     fixture = TestBed.createComponent(ListarComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    productosService = TestBed.inject(ProductosService);
+    productosService = TestBed.inject(ProductsService);
     fixture.detectChanges();
 
     inputEl = fixture.debugElement.query(By.css('input'));
@@ -50,18 +50,18 @@ describe('ListarComponent', () => {
 
   it('getProductos should populate listProductosBase', () => {
 
-    jest.spyOn(productosService, 'getProductos').mockReturnValue(of({ data: mockProductos }));
+    jest.spyOn(productosService, 'getProducts').mockReturnValue(of({ data: mockProductos }));
 
-    component.getProductos();
+    component.getProducts();
 
     expect(component.listProductsBase).toEqual(mockProductos);
   });
 
   it('should render listProductos', waitForAsync(() => {
 
-    jest.spyOn(productosService, 'getProductos').mockReturnValue(of({ data: mockProductos }));
+    jest.spyOn(productosService, 'getProducts').mockReturnValue(of({ data: mockProductos }));
 
-    component.getProductos();
+    component.getProducts();
     fixture.detectChanges();
 
     fixture.whenStable().then(() => {
@@ -90,8 +90,8 @@ describe('ListarComponent', () => {
   });
 
   it('should navigate to "productos/crear-productos"', () => {
-    component.crearProducto();
-    expect(router.navigateByUrl).toHaveBeenCalledWith('productos/crear-productos');
+    component.createProduct();
+    expect(router.navigateByUrl).toHaveBeenCalledWith('products/manage-products');
   });
   it('should convert dates, set product in localStorage, call setProduct, and navigate', () => {
     const producto: IProduct = {
@@ -119,13 +119,13 @@ describe('ListarComponent', () => {
 
     const setProductSpy = jest.spyOn(productosService, 'setProduct');
 
-    component.editarProducto(producto);
+    component.editProduct(producto);
 
     expect(producto.date_release).toBe('2023-10-10');
     expect(producto.date_revision).toBe('2023-11-11');
-    expect(localStorageSetItemMock).toHaveBeenCalledWith('productoEdit', JSON.stringify(expectedProduct));
+    expect(localStorageSetItemMock).toHaveBeenCalledWith('productEdit', JSON.stringify(expectedProduct));
     expect(setProductSpy).toHaveBeenCalledWith(expectedProduct);
-    expect(router.navigateByUrl).toHaveBeenCalledWith('productos/editar-productos');
+    expect(router.navigateByUrl).toHaveBeenCalledWith('products/manage-products');
   });
 
   it('should filter listProductosBase by search text', () => {
@@ -134,7 +134,7 @@ describe('ListarComponent', () => {
     component.quantityShow = 10;
 
     const event = { target: { value: 'Producto 1' } };
-    component.buscarPorTexto(event);
+    component.searchByTexto(event);
 
     expect(component.listProducts.length).toBe(1);
     expect(component.listProducts[0].name).toBe('Producto 1');
@@ -147,7 +147,7 @@ describe('ListarComponent', () => {
     component.quantityShow = 10;
 
     const event = { target: { value: '' } };
-    component.buscarPorTexto(event);
+    component.searchByTexto(event);
 
     expect(component.listProducts.length).toBe(2);
     expect(component.quantityResult).toBe(2);
@@ -178,7 +178,7 @@ describe('ListarComponent', () => {
 
   it('should set nameProductoElim and idProductoElim and call openModal', () => {
     const mockProducto = { id: '1', name: 'Producto 1', description: 'Descripción del Producto 1', date_release: '2023-10-10', date_revision: '2023-11-10' };
-    component.eliminarProducto(mockProducto);
+    component.deleteProduct(mockProducto);
 
     expect(component.nameProductDelete).toBe('¿Estás seguro de eliminar el producto Producto 1?');
     expect(component.idProductDelete).toBe('1');
@@ -186,11 +186,11 @@ describe('ListarComponent', () => {
 
   it('should hide the modal', () => {
     const modal = document.createElement('div');
-    modal.id = 'eliminarProductoModal';
+    modal.id = 'deleteProductModal';
     modal.style.display = 'block';
     document.body.appendChild(modal);
 
-    expect(document.getElementById('eliminarProductoModal')).not.toBeNull();
+    expect(document.getElementById('deleteProductModal')).not.toBeNull();
 
     component.closeModal();
 
@@ -206,17 +206,17 @@ describe('ListarComponent', () => {
     component.idProductDelete = '1';
 
     jest.spyOn(component, 'closeModal');
-    jest.spyOn(component, 'getProductos');
+    jest.spyOn(component, 'getProducts');
     const deleteProductSpy = jest.spyOn(productosService, 'deleteProduct').mockReturnValue(of({}));
     component.confirmDelete();
 
       expect(deleteProductSpy).toHaveBeenCalledWith('1');
-      expect(component.getProductos).toHaveBeenCalled();
+      expect(component.getProducts).toHaveBeenCalled();
 
   });
 
   it('should call buscarPorTexto when keyup event occurs', () => {
-    const spy = jest.spyOn(component, 'buscarPorTexto');
+    const spy = jest.spyOn(component, 'searchByTexto');
     component.configSearch();
 
     const input = inputEl.nativeElement;

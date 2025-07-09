@@ -5,7 +5,7 @@
             <!-- <input (keyup.enter)='buscarPorTexto($event)' placeholder="Buscar..." type="text"> -->
             <input #searchInput placeholder="Buscar..." type="text">
         </div>
-        <div (click)="crearProducto()">
+        <div (click)="createProduct()">
             <button class="button button--primary">Agregar</button>
         </div>
     </div>
@@ -36,10 +36,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of listProducts; let i = index" (dblclick)="editarProducto(item)">
+                    <tr *ngFor="let item of listProducts; let i = index" (dblclick)="editProduct(item)">
                         <td>
                             <app-image-load [idImg]="item.id" [src]="item.logo!"></app-image-load>
-                            <!-- <img [src]="item.logo" alt=""> -->
                         </td>
                         <td>{{item.name}}</td>
                         <td>{{item.description}}</td>
@@ -51,8 +50,8 @@
                                     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                 </span>
                                 <div id="drop_{{i}}" class="dropdown-menu">
-                                    <span (click)="editarProducto(item)" class="dropdown-item">Editar</span>
-                                    <span (click)="eliminarProducto(item)" class="dropdown-item">Eliminar</span>
+                                    <span (click)="editProduct(item)" class="dropdown-item">Editar</span>
+                                    <span (click)="deleteProduct(item)" class="dropdown-item">Eliminar</span>
                                 </div>
                             </div>
                         </td>
@@ -75,7 +74,7 @@
     </div>
     
     <div *ngIf="loading">
-        <app-skeleton-listar></app-skeleton-listar>
+        <app-skeleton-list></app-skeleton-list>
     </div>
     
 </div>
